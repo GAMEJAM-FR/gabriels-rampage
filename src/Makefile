@@ -1,12 +1,12 @@
 NAME:=			MonkGenocide
 SRCDIR:=		source
-SRC:=			$(SRCDIR)/main.cpp \
-			$(SRCDIR)/Character.cpp
+SRC:=			$(SRCDIR)/Character.cpp	\
+			$(SRCDIR)/Player.cpp
 OBJ:=			$(SRC:.cpp=.o)
 
 CXX:=			g++
-CXXFLAGS:=		-W -Wall -Wextra -Werror
-LDFLAGS:=		-I include
+CXXFLAGS:=		-I include -W -Wall -Wextra -Werror
+LDFLAGS:=		
 LDLIBS:=
 
 all:			$(NAME)

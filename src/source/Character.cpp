@@ -1,13 +1,14 @@
 #include "Character.hpp"
 
-Character::Character() :
-  _hp(1),
-  _attack(1),
-  _frequence(1),
-  _speed(10),
-  _hitbox(5),
-  _range(5),
-  _fly(false)
+Character::Character(unsigned int hp, unsigned int attack, float frequence, unsigned int speed,
+		     unsigned int hitbox, unsigned int range, bool fly) :
+  _hp(hp),
+  _attack(attack),
+  _frequence(frequence),
+  _speed(speed),
+  _hitbox(hitbox),
+  _range(range),
+  _fly(fly)
 {
 
 }

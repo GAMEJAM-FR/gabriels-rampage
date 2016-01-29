@@ -1,11 +1,14 @@
 #ifndef CHARACTER_HPP_
 # define CHARACTER_HPP_
 
+# include <SFML/Graphics.hpp>
+# include <vector>
 
 class Character
 {
 public:
-  Character();
+  Character(unsigned int hp = 1, unsigned int attack = 1, float frequence = 1, unsigned int speed = 10,
+	    unsigned int hitbox = 5, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   ~Character();
 

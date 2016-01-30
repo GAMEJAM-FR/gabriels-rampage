@@ -3,6 +3,8 @@
 
 # include "Constants.hpp"
 
+class GameWindow;
+
 class Projectile
 {
 public:
@@ -13,7 +15,7 @@ public:
 
   Projectile& operator=(Projectile const&);
 
-  bool update(float);
+  bool update(GameWindow *, float);
   
   int getX() const;
   void setX(int);

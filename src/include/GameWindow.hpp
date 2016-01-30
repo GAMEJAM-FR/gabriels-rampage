@@ -4,6 +4,10 @@
 # include <vector>
 
 # include "Asset.hpp"
+# include "Projectile.hpp"
+
+class Character;
+class Player;
 
 class GameWindow
 {
@@ -14,13 +18,15 @@ private:
   std::vector<wrap::Sprite *> _sprites;
   std::vector<wrap::Text *> _texts;
   std::vector<wrap::Music *> _musics;
+  std::vector<Character *> _entities;
+  sf::View *_view;
   sf::Event _event;
 public:
   GameWindow();
   ~GameWindow();
 private:
   void input();
-  void update();
+  void update(float);
   void draw();
 public:
   void loop(unsigned int);
@@ -33,6 +39,10 @@ public:
 		unsigned int,
 		unsigned int);
   void add_music(const std::string &, bool);
+  bool checkProjectile(const Projectile &);
+public:
+  void setView(int, int);
+  Character &getPlayer() const;
 };
 
 #endif /* GAMEWINDOW_HPP_ */

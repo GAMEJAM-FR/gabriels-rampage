@@ -5,28 +5,28 @@
 
 class Player : public Character
 {
-private:
-  void left(unsigned int);
-  void up(unsigned int);
-  void right(unsigned int);
-  void down(unsigned int);
 public:
-  void (Player:: *move[4])(unsigned int) =
-  {
-    &Player::left,
-    &Player::up,
-    &Player::right,
-    &Player::down
-  };
+  void left();
+  void up();
+  void right();
+  void down();
 public:
-  Player();
+  Player(int, int);
   Player(Player const&);
   ~Player();
 
   Player& operator=(Player const&);
 
-  void attack(GameWindow *&);
-  void specialAttack(GameWindow *&);
+  void attack(GameWindow *);
+  void specialAttack(GameWindow *);
+};
+
+void (Player:: *move[4])() =
+{
+  &Player::left,
+  &Player::up,
+  &Player::right,
+  &Player::down
 };
 
 #endif /* !PLAYER_HPP_ */

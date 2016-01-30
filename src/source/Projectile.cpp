@@ -1,4 +1,5 @@
 #include "Projectile.hpp"
+#include "GameWindow.hpp"
 
 Projectile::Projectile(int x, int y, int damage, Direction direction) :
   _baseX((float)x),
@@ -6,10 +7,10 @@ Projectile::Projectile(int x, int y, int damage, Direction direction) :
   _x((float)x),
   _y((float)y),
   _damage(damage),
+  _speed(100),
+  _range(0),
   _direction(direction)
 {
-  this->_range = 0;
-  this->_speed = 100;
 }
 
 Projectile::Projectile(int x, int y, int damage, Direction direction, int range) :
@@ -18,10 +19,10 @@ Projectile::Projectile(int x, int y, int damage, Direction direction, int range)
   _x((float)x),
   _y((float)y),
   _damage(damage),
-  _direction(direction),
-  _range(range)
+  _speed(100),
+  _range(range),
+  _direction(direction)
 {
-  this->_speed = 100;
 }
 
 Projectile::Projectile(Projectile const& copy) :
@@ -31,9 +32,9 @@ Projectile::Projectile(Projectile const& copy) :
   _y(copy._y),
   _damage(copy._damage),
   _speed(copy._speed),
-  _direction(copy._direction),
-{
-  
+  _range(copy._range),
+  _direction(copy._direction)
+{ 
 }
 
 Projectile::~Projectile()
@@ -49,6 +50,7 @@ Projectile& Projectile::operator=(Projectile const& copy)
   this->_y = copy._y;
   this->_damage = copy._damage;
   this->_speed = copy._speed;
+  this->_range = copy._range;
   this->_direction = copy._direction;
   return (*this);
 }
@@ -57,19 +59,19 @@ bool Projectile::update(GameWindow *win, float time)
 {
   if (move(time))
     return (true);
-  return (win->checkProjectile(this));
+  return (win->checkProjectile(*this));
 }
 
 bool Projectile::move(float time)
 {
   if (this->_direction == LEFT)
-    this->_x -= this->_direction * this->_time;
+    this->_x -= this->_direction * time;
   else if (this->_direction == UP)
-    this->_y -= this->_direction * this->_time;
+    this->_y -= this->_direction * time;
   else if (this->_direction == RIGHT)
-    this->_x += this->_direction * this->_time;
+    this->_x += this->_direction * time;
   else
-    this->_y += this->_direction * this->_time;
+    this->_y += this->_direction * time;
   if ((this->_x - this->_baseX) + (this->_y - this->_baseY) >= this->_range)
     return (true);
   return (false);

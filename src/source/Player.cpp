@@ -1,8 +1,7 @@
 #include "Player.hpp"
 
-Player::Player() : Character(0, 0, Character::UP, 15, 10, 0.5, 15, 5, 25, false)
+Player::Player(int x, int y) : Character(x, y, Character::UP, 15, 10, 0.5, 15, 5, 25, false)
 {
-
 }
 
 Player::Player(Player const& copy) : Character(copy)
@@ -21,32 +20,32 @@ Player& Player::operator=(Player const& copy)
   return (*this);
 }
 
-void Player::left(unsigned int time)
+void Player::left()
 {
-  collide(this->_x - (this->_speed * time), this->_y);
+  collide(this->_x - this->_speed, this->_y);
 }
 
-void Player::up(unsigned int time)
+void Player::up()
 {
-  collide(this->_x, this->_y - (this->_speed * time));
+  collide(this->_x, this->_y - this->_speed);
 }
 
-void Player::right(unsigned int time)
+void Player::right()
 {
-  collide(this->_x + (this->_speed * time), this->_y);
+  collide(this->_x + this->_speed, this->_y);
 }
 
-void Player::left(unsigned int time)
+void Player::down()
 {
-  collide(this->_x, this->_y + (this->_speed * time));
+  collide(this->_x, this->_y + this->_speed);
 }
 
-void Player::attack(GameWindow *&)
+void Player::attack(GameWindow *win)
 {
-  
+  (void)win;
 }
 
-void Player::specialAttack(GameWindow *&)
+void Player::specialAttack(GameWindow *win)
 {
-  
+  (void)win;
 }

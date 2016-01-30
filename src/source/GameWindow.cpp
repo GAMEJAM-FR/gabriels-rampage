@@ -1,5 +1,6 @@
 #include "GameWindow.hpp"
 #include "Constants.hpp"
+#include "Player.hpp"
 
 #include <iostream>
 
@@ -9,8 +10,12 @@ GameWindow::GameWindow() :
   _height(HEIGHT),
   _sprites(std::vector<wrap::Sprite *>()),
   _texts(std::vector<wrap::Text *>()),
-  _musics(std::vector<wrap::Music *>())
+  _musics(std::vector<wrap::Music *>()),
+  _entities(std::vector<Character *>()),
+  _view(new sf::View)
 {
+  this->_view->setCenter(42, 42);
+  this->_entities.push_back(new Player(42, 42));
 }
 
 GameWindow::~GameWindow()
@@ -35,6 +40,12 @@ GameWindow::~GameWindow()
       delete this->_musics[ct];
       ct++;
     }
+  ct = 0;
+  while (ct < this->_entities.size())
+    {
+      delete this->_entities[ct];
+      ct++;
+    }
 }
 
 void GameWindow::input()
@@ -54,11 +65,25 @@ void GameWindow::input()
     }
 }
 
-void GameWindow::update()
+void GameWindow::update(float time)
 {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+  unsigned int ct = 0;
+
+  while (ct < 4)
     {
-      std::cout << "BITE\n";
+      if (sf::Keyboard::isKeyPressed(MOVE[ct][0]) || sf::Keyboard::isKeyPressed(MOVE[ct][1]))
+	(dynamic_cast<Player *>(this->_entities[0])->*move[ct])();
+      ct++;
+    }
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    dynamic_cast<Player *>(this->_entities[0])->attack(this);
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    dynamic_cast<Player *>(this->_entities[0])->specialAttack(this);
+  ct = 1;
+  while (ct < this->_entities.size())
+    {
+      this->_entities[0]->update(this, time);
+      ct++;
     }
 }
 
@@ -95,7 +120,7 @@ void GameWindow::loop(unsigned int fps)
 	{
 	  clock.restart();
 	  this->input();
-	  this->update();
+	  this->update((float)t.asMilliseconds() / 1000);
 	  this->draw();
 	}
     }
@@ -115,4 +140,14 @@ void GameWindow::add_text(const std::string &content, const std::string &path,
 void GameWindow::add_music(const std::string &path, bool loop)
 {
   this->_musics.push_back(new wrap::Music(path, loop));
+}
+
+void GameWindow::setView(int x, int y)
+{
+  this->_view->move(x, y);
+}
+
+Character &GameWindow::getPlayer() const
+{
+  return (*this->_entities[0]);
 }

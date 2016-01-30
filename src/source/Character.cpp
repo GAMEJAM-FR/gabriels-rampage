@@ -50,7 +50,7 @@ Character& Character::operator=(Character const& copy)
   return (*this);
 }
 
-bool Character::attack(Character*& enemy)
+bool Character::attack(Character &enemy)
 {
   if (this->_hp <= 0)
     return (false);
@@ -59,27 +59,27 @@ bool Character::attack(Character*& enemy)
       this->_cooldown.restart();
       if (this->_direction == LEFT)
 	{
-	  if (this->_x - (enemy->_x + this->_hitbox) <= this->_range + this->_hitbox &&
-	      this->_x - (enemy->_x + (int)this->_hitbox) >= 0)
-	    return (enemy->takeDamage(this->_attack), true);
+	  if (this->_x - (enemy._x + this->_hitbox) <= this->_range + this->_hitbox &&
+	      this->_x - (enemy._x + (int)this->_hitbox) >= 0)
+	    return (enemy.takeDamage(this->_attack), true);
 	}
       else if (this->_direction == UP)
 	{
-	  if (this->_y - (enemy->_y + this->_hitbox) <= this->_range + this->_hitbox &&
-	      this->_y - (enemy->_y + (int)this->_hitbox) >= 0)
-	    return (enemy->takeDamage(this->_attack), true);
+	  if (this->_y - (enemy._y + this->_hitbox) <= this->_range + this->_hitbox &&
+	      this->_y - (enemy._y + (int)this->_hitbox) >= 0)
+	    return (enemy.takeDamage(this->_attack), true);
 	}
       else if (this->_direction == RIGHT)
 	{
-	  if ((enemy->_x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
-	      (enemy->_x - (int)this->_hitbox) - this->_x >= 0)
-	    return (enemy->takeDamage(this->_attack), true);
+	  if ((enemy._x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
+	      (enemy._x - (int)this->_hitbox) - this->_x >= 0)
+	    return (enemy.takeDamage(this->_attack), true);
 	}
       else
 	{
-	  if ((enemy->_y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
-	      (enemy->_y - (int)this->_hitbox) - this->_y >= 0)
-	    return (enemy->takeDamage(this->_attack), true);
+	  if ((enemy._y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
+	      (enemy._y - (int)this->_hitbox) - this->_y >= 0)
+	    return (enemy.takeDamage(this->_attack), true);
 	}
     }
   return (false);
@@ -96,15 +96,15 @@ void Character::update(GameWindow *win, float time)
     moveIA(win->getPlayer(), time);
 }
 
-void Character::moveIA(const Character *&player, float time)
+void Character::moveIA(const Character &player, float time)
 {
   float	x;
   float	y;
 
   if (this->_hp <= 0)
     return ;
-  x = (float)player->getX() - this->_x;
-  y = (float)player->getY() - this->_y;
+  x = (float)player.getX() - this->_x;
+  y = (float)player.getY() - this->_y;
   collide(this->_x + (x / (x + y)) * this->_speed * time,
 	  this->_y + (y / (x + y)) * this->_speed * time);
 }

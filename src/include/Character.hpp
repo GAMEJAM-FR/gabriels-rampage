@@ -22,14 +22,14 @@ public:
 	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
 	    unsigned int hitbox = 5, unsigned int range = 5, bool fly = false);
   Character(Character const&);
-  ~Character();
+  virtual ~Character();
 
   Character& operator=(Character const&);
 
-  virtual bool attack(Character *&);
+  virtual bool attack(Character &);
   void takeDamage(unsigned int);
   virtual void update(GameWindow *, float);
-  void moveIA(const Character *&, float);
+  void moveIA(const Character &, float);
   void collide(float, float);
   
   int getX() const;

@@ -3,7 +3,9 @@ SRCDIR:=		source
 SRC:=			$(SRCDIR)/main.cpp \
 			$(SRCDIR)/GameWindow.cpp \
 			$(SRCDIR)/Asset.cpp \
-			$(SRCDIR)/Character.cpp
+			$(SRCDIR)/Character.cpp \
+			$(SRCDIR)/Player.cpp \
+			$(SRCDIR)/Projectile.cpp
 OBJ:=			$(SRC:.cpp=.o)
 
 CXX:=			g++

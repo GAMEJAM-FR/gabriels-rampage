@@ -19,6 +19,9 @@ public:
 
   void attack(GameWindow *);
   void specialAttack(GameWindow *);
+
+private:
+  std::vector<Projectile *> _projectiles;
 };
 
 #endif /* !PLAYER_HPP_ */

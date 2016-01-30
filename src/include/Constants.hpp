@@ -1,3 +1,4 @@
+
 #ifndef CONSTANTS_HPP_
 # define CONSTANTS_HPP_
 
@@ -21,10 +22,10 @@ const sf::Keyboard::Key MOVE[4][2] =
   };
 enum Direction
   {
+    DOWN,
     LEFT,
-    UP,
     RIGHT,
-    DOWN
+    UP
   };
 
 /*
@@ -32,6 +33,8 @@ enum Direction
  */
 const std::string tTest =
   "asset/Plain.png";
+const std::string tMonk =
+  "asset/monk.png";
 
 /*
  * font paths

@@ -11,6 +11,7 @@ Projectile::Projectile(int x, int y, int damage, Direction direction) :
   _range(0),
   _direction(direction)
 {
+  this->_sprite = new wrap::Sprite(tBall, this->_x, this->_y, false);
 }
 
 Projectile::Projectile(int x, int y, int damage, Direction direction, int range) :
@@ -23,6 +24,7 @@ Projectile::Projectile(int x, int y, int damage, Direction direction, int range)
   _range(range),
   _direction(direction)
 {
+  this->_sprite = new wrap::Sprite(tBall, this->_x, this->_y, false);
 }
 
 Projectile::Projectile(Projectile const& copy) :
@@ -33,8 +35,10 @@ Projectile::Projectile(Projectile const& copy) :
   _damage(copy._damage),
   _speed(copy._speed),
   _range(copy._range),
-  _direction(copy._direction)
-{ 
+  _direction(copy._direction),
+  _sprite(copy._sprite)
+{
+  
 }
 
 Projectile::~Projectile()
@@ -52,6 +56,7 @@ Projectile& Projectile::operator=(Projectile const& copy)
   this->_speed = copy._speed;
   this->_range = copy._range;
   this->_direction = copy._direction;
+  this->_sprite = copy._sprite;
   return (*this);
 }
 
@@ -65,13 +70,13 @@ bool Projectile::update(GameWindow *win, float time)
 bool Projectile::move(float time)
 {
   if (this->_direction == LEFT)
-    this->_x -= this->_direction * time;
+    setX(this->_x - this->_direction * time);
   else if (this->_direction == UP)
-    this->_y -= this->_direction * time;
+    setY(this->_y - this->_direction * time);
   else if (this->_direction == RIGHT)
-    this->_x += this->_direction * time;
+    setX(this->_x + this->_direction * time);
   else
-    this->_y += this->_direction * time;
+    setY(this->_y + this->_direction * time);
   if ((this->_x - this->_baseX) + (this->_y - this->_baseY) >= this->_range)
     return (true);
   return (false);
@@ -85,6 +90,7 @@ int Projectile::getX() const
 void Projectile::setX(int newX)
 {
   this->_x = newX;
+  this->_sprite->setPos(this->_x, this->_y);
 }
 
 int Projectile::getY() const
@@ -95,6 +101,7 @@ int Projectile::getY() const
 void Projectile::setY(int newY)
 {
   this->_y = newY;
+  this->_sprite->setPos(this->_x, this->_y);
 }
 
 int Projectile::getDamage() const

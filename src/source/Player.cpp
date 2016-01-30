@@ -1,7 +1,9 @@
 #include "Player.hpp"
-#include <iostream>
-Player::Player(int x, int y) : Character(x, y, Character::UP, 15, 10, 0.5, 1, 5, 25, false)
+
+Player::Player(int x, int y) : Character(x, y, UP, 15, 10, 0.5, 1, 5, 25, false)
 {
+  this->_sprite = new wrap::Sprite(tMonk, 0, 0, false);
+  (**this->_sprite).setTextureRect(sf::IntRect(0, 0, 24, 24));
 }
 
 Player::Player(Player const& copy) : Character(copy)
@@ -47,9 +49,11 @@ void Player::down(GameWindow *win)
 void Player::attack(GameWindow *win)
 {
   (void)win;
+  this->_projectiles.push_back(new Projectile(this->_x, this->_y, this->_attack, this->_direction));
 }
 
 void Player::specialAttack(GameWindow *win)
 {
   (void)win;
+  this->_projectiles.push_back(new Projectile(this->_x, this->_y, this->_attack, this->_direction));
 }

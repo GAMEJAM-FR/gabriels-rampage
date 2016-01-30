@@ -2,6 +2,7 @@
 # define PROJECTILE_HPP_
 
 # include "Constants.hpp"
+# include "Asset.hpp"
 
 class GameWindow;
 
@@ -37,6 +38,7 @@ private:
   float _speed;
   int _range;
   Direction _direction;
+  wrap::Sprite *_sprite;
 
   bool move(float);
 };

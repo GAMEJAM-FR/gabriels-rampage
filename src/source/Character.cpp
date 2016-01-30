@@ -1,6 +1,6 @@
 #include "Character.hpp"
 
-Character::Character(int x, int y, Character::Direction direction, unsigned int hp,
+Character::Character(int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
 		     unsigned int hitbox, unsigned int range, bool fly) :
   _x((float)x),
@@ -12,7 +12,8 @@ Character::Character(int x, int y, Character::Direction direction, unsigned int 
   _speed(speed),
   _hitbox(hitbox),
   _range(range),
-  _fly(fly)
+  _fly(fly),
+  _idx(0)
 {
 
 }
@@ -27,7 +28,8 @@ Character::Character(Character const& copy) :
   _speed(copy._speed),
   _hitbox(copy._hitbox),
   _range(copy._range),
-  _fly(copy._fly)
+  _fly(copy._fly),
+  _idx(copy._idx)
 {
   
 }
@@ -45,8 +47,9 @@ Character& Character::operator=(Character const& copy)
   this->_speed = copy._speed;
   this->_hitbox = copy._hitbox;
   this->_range = copy._range;
-  this->_sprites = copy._sprites;
+  this->_sprite = copy._sprite;
   this->_fly = copy._fly;
+  this->_idx = copy._idx;
   return (*this);
 }
 
@@ -92,8 +95,16 @@ void Character::takeDamage(unsigned int damage)
 
 void Character::update(GameWindow *win, float time)
 {
+  if (this->_animation.getElapsedTime().asMilliseconds() > 200)
+    {
+      this->_animation.restart();
+      this->_idx++;
+      if (this->_idx > 2)
+	this->_idx = 0;
+    }
   if (!attack(win->getPlayer()))
     moveIA(win->getCollision(), win->getPlayer(), time);
+  (**this->_sprite).setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
 }
 
 void Character::moveIA(sf::Image collision, const Character &player, float time)
@@ -114,28 +125,28 @@ void Character::collide(sf::Image collision, float newX, float newY)
   while (this->_x < newX && newX < collision.getSize().x)
     {
       if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
-	this->_x++;
+	setX(this->_x + 1);
       else
 	break ;
     }
   while (this->_y < newY && newY < collision.getSize().y)
     {
       if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
-	this->_y++;
+	setY(this->_y + 1);
       else
 	break ;
     }
   while (this->_x > newX && newX >= 0)
     {
       if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
-	this->_x--;
+	setX(this->_x - 1);
       else
 	break ;
     }
   while (this->_y > newY && newY >= 0)
     {
       if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
-	this->_y--;
+	setY(this->_y - 1);
       else
 	break ;
     }
@@ -149,6 +160,7 @@ int Character::getX() const
 void Character::setX(int x)
 {
   this->_x = x;
+  this->_sprite->setPos(this->_x, this->_y);
 }
 
 int Character::getY() const
@@ -159,6 +171,7 @@ int Character::getY() const
 void Character::setY(int y)
 {
   this->_y = y;
+  this->_sprite->setPos(this->_x, this->_y);
 }
 
 unsigned int Character::getHp() const
@@ -219,16 +232,6 @@ unsigned int Character::getRange() const
 void Character::setRange(unsigned int newRange)
 {
   this->_range = newRange;
-}
-
-std::vector<sf::Sprite *> Character::getSprites() const
-{
-  return (this->_sprites);
-}
-
-void Character::setSprites(std::vector<sf::Sprite *> newSprites)
-{
-  this->_sprites = newSprites;
 }
 
 bool Character::getFly() const

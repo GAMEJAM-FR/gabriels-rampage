@@ -8,15 +8,6 @@
 
 class Character
 {
-protected:
-  enum Direction
-    {
-      LEFT,
-      UP,
-      RIGHT,
-      DOWN
-    };
-  
 public:
   Character(int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
 	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
@@ -48,8 +39,6 @@ public:
   void setHitbox(unsigned int);
   unsigned int getRange() const;
   void setRange(unsigned int);
-  std::vector<sf::Sprite *> getSprites() const;
-  void setSprites(std::vector<sf::Sprite *>);
   bool getFly() const;
   void setFly(bool);
 
@@ -63,9 +52,11 @@ protected:
   unsigned int _speed;
   unsigned int _hitbox;
   unsigned int _range;
-  std::vector<sf::Sprite *> _sprites;
+  wrap::Sprite *_sprite;
   bool _fly;
   sf::Clock _cooldown;
+  int _idx;
+  sf::Clock _animation;
 };
 
 #endif /* !CHARACTER_HPP_ */

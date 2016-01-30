@@ -35,6 +35,8 @@ GameWindow::~GameWindow()
   unsigned int ct = 0;
 
   delete this->_window;
+  delete this->_view;
+  delete this->_collision;
   while (ct < this->_sprites.size())
     {
       delete this->_sprites[ct];
@@ -73,6 +75,7 @@ void GameWindow::input()
 	{
 	  this->_width = this->_event.size.width;
 	  this->_height = this->_event.size.height;
+	  this->_window->setView(sf::View(sf::FloatRect(0, 0, this->_width, this->_height)));
 	}
     }
 }
@@ -122,7 +125,9 @@ void GameWindow::draw()
 void GameWindow::loop(unsigned int fps)
 {
   sf::Clock clock;
+  sf::Clock clock2;
   sf::Time t = sf::milliseconds(1 / (float) fps);
+  int ct = 0;
   
   if (this->_musics.size() > 0)
     (**this->_musics[0]).play();
@@ -131,6 +136,13 @@ void GameWindow::loop(unsigned int fps)
       t = clock.getElapsedTime();
       if ((float)t.asMilliseconds() / 1000 >= 1 / (float)fps)
 	{
+	  ct++;
+	  if (clock2.getElapsedTime().asSeconds() >= 1)
+	    {
+	      std::cout << "fps: " << ct << std::endl;
+	      ct = 0;
+	      clock2.restart();
+	    }
 	  clock.restart();
 	  this->input();
 	  this->update((float)t.asMilliseconds() / 1000);

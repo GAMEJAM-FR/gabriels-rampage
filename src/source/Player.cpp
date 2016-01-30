@@ -23,28 +23,24 @@ Player& Player::operator=(Player const& copy)
 void Player::left(GameWindow *win)
 {
   collide(win->getCollision(), this->_x - this->_speed, this->_y);
-  std::cout << this->_x << " bite " << this->_y << " left\n";
   win->setView(this->_x, this->_y);
 }
 
 void Player::up(GameWindow *win)
 {
   collide(win->getCollision(), this->_x, this->_y - this->_speed);
-  std::cout << this->_x << " bite " << this->_y << " up\n";
   win->setView(this->_x, this->_y);
 }
 
 void Player::right(GameWindow *win)
 {
   collide(win->getCollision(), this->_x + this->_speed, this->_y);
-  std::cout << this->_x << " bite " << this->_y << " right\n";
   win->setView(this->_x, this->_y);
 }
 
 void Player::down(GameWindow *win)
 {
   collide(win->getCollision(), this->_x, this->_y + this->_speed);
-  std::cout << this->_x << " bite " << this->_y << " down\n";
   win->setView(this->_x, this->_y);
 }
 

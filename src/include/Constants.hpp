@@ -10,7 +10,7 @@
 const unsigned int WIDTH = 1024;
 const unsigned int HEIGHT = 768;
 const std::string RES = "1024x768";
-const std::string TITLE = "Monk Genocide";
+const std::string TITLE = "Gabriel's Rampage";
 const unsigned int FPS = 60;
 const sf::Keyboard::Key MOVE[4][2] =
   {

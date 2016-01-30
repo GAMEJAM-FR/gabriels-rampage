@@ -7,26 +7,42 @@
 
 namespace wrap
 {
-  class Sprite
+  class Asset
+  {
+  protected:
+    unsigned int _x;
+    unsigned int _y;
+    unsigned int _width;
+    unsigned int _height;
+    unsigned int _xOffset;
+    unsigned int _yOffset;
+    Asset(unsigned int x, unsigned int y) : _x(x), _y(y) {}
+    virtual ~Asset() {}
+  };
+
+  class Sprite : public Asset
   {
   private:
     sf::Texture *_texture;
     sf::Sprite *_sprite;
+    bool _bg;
   public:
-    Sprite(const std::string &);
+    Sprite(const std::string &, unsigned int, unsigned int, bool);
     ~Sprite();
     sf::Sprite &operator*();
+    void setPos(unsigned int, unsigned int);
   };
 
-  class Text
+  class Text : public Asset
   {
   private:
     sf::Font *_font;
     sf::Text *_text;
   public:
-    Text(const std::string &, const std::string &, unsigned int);
+    Text(const std::string &, const std::string &, unsigned int, unsigned int, unsigned int);
     ~Text();
     sf::Text &operator*();
+    void setPos(unsigned int, unsigned int);
   };
 
   class Music
@@ -34,7 +50,7 @@ namespace wrap
   private:
     sf::Music *_music;
   public:
-    Music(const std::string &);
+    Music(const std::string &, bool);
     ~Music();
     sf::Music &operator*();
   };

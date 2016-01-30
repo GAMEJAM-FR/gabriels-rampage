@@ -1,8 +1,15 @@
 #include "GameWindow.hpp"
 #include "Constants.hpp"
 
+#include <iostream>
+
 GameWindow::GameWindow() :
-  _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE))
+  _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE)),
+  _width(WIDTH),
+  _height(HEIGHT),
+  _sprites(std::vector<wrap::Sprite *>()),
+  _texts(std::vector<wrap::Text *>()),
+  _musics(std::vector<wrap::Music *>())
 {
 }
 
@@ -32,10 +39,27 @@ GameWindow::~GameWindow()
 
 void GameWindow::input()
 {
+  while (this->_window->pollEvent(this->_event))
+    {
+      if (this->_event.type == sf::Event::Closed)
+	{
+	  this->_window->close();
+	  return ;
+	}
+      if (this->_event.type == sf::Event::Resized)
+	{
+	  this->_width = this->_event.size.width;
+	  this->_height = this->_event.size.height;
+	}
+    }
 }
 
 void GameWindow::update()
 {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+      std::cout << "BITE\n";
+    }
 }
 
 void GameWindow::draw()
@@ -70,17 +94,18 @@ void GameWindow::loop(unsigned int fps)
     }
 }
 
-void GameWindow::add_sprite(const std::string &path)
+void GameWindow::add_sprite(const std::string &path, unsigned int x, unsigned int y, bool bg)
 {
-  this->_sprites.push_back(new wrap::Sprite(path));
+  this->_sprites.push_back(new wrap::Sprite(path, x, y, bg));
 }
 
-void GameWindow::add_text(const std::string &content, const std::string &path, unsigned int size)
+void GameWindow::add_text(const std::string &content, const std::string &path,
+			  unsigned int size, unsigned int x, unsigned int y)
 {
-  this->_texts.push_back(new wrap::Text(content, path, size));
+  this->_texts.push_back(new wrap::Text(content, path, size, x, y));
 }
 
-void GameWindow::add_music(const std::string &path)
+void GameWindow::add_music(const std::string &path, bool loop)
 {
-  this->_musics.push_back(new wrap::Music(path));
+  this->_musics.push_back(new wrap::Music(path, loop));
 }

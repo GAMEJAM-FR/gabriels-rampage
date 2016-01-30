@@ -151,3 +151,16 @@ Character &GameWindow::getPlayer() const
 {
   return (*this->_entities[0]);
 }
+
+bool GameWindow::checkProjectile(const Projectile &ejac)
+{
+  unsigned int ct = 0;
+
+  while (ct < this->_entities.size())
+    {
+      if ()
+	return (true);
+      ct++;
+    }
+  return (false);
+}

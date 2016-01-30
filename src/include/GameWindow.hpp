@@ -1,19 +1,19 @@
 #ifndef GAMEWINDOW_HPP_
 # define GAMEWINDOW_HPP_
 
-# include <SFML/Audio.hpp>
-# include <SFML/Graphics.hpp>
 # include <vector>
+
+# include "Asset.hpp"
 
 class GameWindow
 {
 private:
   sf::RenderWindow *_window;
-  std::vector<sf::Sprite *> _sprites;
-  std::vector<sf::Music *> _musics;
-  std::vector<sf::Text *> _texts;
-  sf::Event _event;
+  std::vector<wrap::Sprite *> _sprites;
+  std::vector<wrap::Text *> _texts;
+  std::vector<wrap::Music *> _musics;
   std::vector<int> _event_tab;
+  sf::Event _event;
 public:
   GameWindow();
   ~GameWindow();
@@ -22,12 +22,12 @@ private:
   void update();
   void draw();
 public:
-  void init(std::vector<sf::Sprite *> &,
-	    std::vector<sf::Text *> &,
-	    std::vector<sf::Music *> &);
   void loop(unsigned int);
+  void add_sprite(const std::string &);
+  void add_text(const std::string &,
+		const std::string &,
+		unsigned int);
+  void add_music(const std::string &);
 };
-
-bool operator<<(std::vector<int>, int);
 
 #endif /* GAMEWINDOW_HPP_ */

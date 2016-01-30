@@ -2,39 +2,40 @@
 #include "Constants.hpp"
 
 GameWindow::GameWindow() :
-  _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE)),
-  _sprites(std::vector<sf::Sprite *>()),
-  _musics(std::vector<sf::Music *>()),
-  _texts(std::vector<sf::Text *>()),
-  _event(sf::Event())
+  _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE))
 {
 }
 
 GameWindow::~GameWindow()
 {
-  delete this->_window;
-}
+  unsigned int ct = 0;
 
-void GameWindow::init(std::vector<sf::Sprite *> &sprites,
-		     std::vector<sf::Text *> &texts,
-		     std::vector<sf::Music *> &musics)
-{
-  this->_sprites = sprites;
-  this->_texts = texts;
-  this->_musics = musics;
+  delete this->_window;
+  while (ct < this->_sprites.size())
+    {
+      delete this->_sprites[ct];
+      ct++;
+    }
+  ct = 0;
+  while (ct < this->_texts.size())
+    {
+      delete this->_texts[ct];
+      ct++;
+    }
+  ct = 0;
+  while (ct < this->_musics.size())
+    {
+      delete this->_musics[ct];
+      ct++;
+    }
 }
 
 void GameWindow::input()
 {
-  this->_event_tab.clear();
-  while (this->_window->pollEvent(this->_event))
-    this->_event_tab.push_back(this->_event.type);
 }
 
 void GameWindow::update()
 {
-  if (this->_event_tab << sf::Event::Closed)
-    this->_window->close();
 }
 
 void GameWindow::draw()
@@ -42,19 +43,15 @@ void GameWindow::draw()
   unsigned int ct = 0;
 
   this->_window->clear();
-  while (ct < this->_sprites.size() || (ct = 0))
+  while (ct < this->_sprites.size())
     {
-      this->_window->draw(*this->_sprites[ct]);
+      this->_window->draw(**this->_sprites[ct]);
       ct++;
     }
-  while (ct < this->_musics.size() || (ct = 0))
-    {
-      this->_musics[ct]->play();
-      ct++;
-    }
+  ct = 0;
   while (ct < this->_texts.size())
     {
-      this->_window->draw(*this->_texts[ct]);
+      this->_window->draw(**this->_texts[ct]);
       ct++;
     }
   this->_window->display();
@@ -63,6 +60,8 @@ void GameWindow::draw()
 void GameWindow::loop(unsigned int fps)
 {
   (void)fps;
+  if (this->_musics.size() > 0)
+    (**this->_musics[0]).play();
   while (this->_window->isOpen())
     {
       this->input();
@@ -71,15 +70,17 @@ void GameWindow::loop(unsigned int fps)
     }
 }
 
-bool operator<<(std::vector<int> tab, int elem)
+void GameWindow::add_sprite(const std::string &path)
 {
-  unsigned int ct = 0;
+  this->_sprites.push_back(new wrap::Sprite(path));
+}
 
-  while (ct < tab.size())
-    {
-      if (tab[ct] == elem)
-	return (true);
-      ct++;
-    }
-  return (false);
+void GameWindow::add_text(const std::string &content, const std::string &path, unsigned int size)
+{
+  this->_texts.push_back(new wrap::Text(content, path, size));
+}
+
+void GameWindow::add_music(const std::string &path)
+{
+  this->_musics.push_back(new wrap::Music(path));
 }

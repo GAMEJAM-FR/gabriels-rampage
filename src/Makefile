@@ -2,12 +2,13 @@ NAME:=			MonkGenocide
 SRCDIR:=		source
 SRC:=			$(SRCDIR)/main.cpp \
 			$(SRCDIR)/GameWindow.cpp \
+			$(SRCDIR)/Asset.cpp \
 			$(SRCDIR)/Character.cpp
 OBJ:=			$(SRC:.cpp=.o)
 
 CXX:=			g++
 CXXFLAGS:=		-I include -W -Wall -Wextra -Werror
-LDFLAGS:=		
+LDFLAGS:=		-L /usr/lib/
 LDLIBS:=		-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 all:			$(NAME)

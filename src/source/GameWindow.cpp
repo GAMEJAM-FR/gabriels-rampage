@@ -4,6 +4,14 @@
 
 #include <iostream>
 
+void (Player:: *move[4])(GameWindow *) =
+{
+  &Player::left,
+  &Player::up,
+  &Player::right,
+  &Player::down
+};
+
 GameWindow::GameWindow() :
   _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE)),
   _width(WIDTH),
@@ -72,7 +80,7 @@ void GameWindow::update(float time)
   while (ct < 4)
     {
       if (sf::Keyboard::isKeyPressed(MOVE[ct][0]) || sf::Keyboard::isKeyPressed(MOVE[ct][1]))
-	(dynamic_cast<Player *>(this->_entities[0])->*move[ct])();
+	(dynamic_cast<Player *>(this->_entities[0])->*move[ct])(this);
       ct++;
     }
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -144,7 +152,7 @@ void GameWindow::add_music(const std::string &path, bool loop)
 
 void GameWindow::setView(int x, int y)
 {
-  this->_view->move(x, y);
+  this->_view->setCenter(x, y);
 }
 
 Character &GameWindow::getPlayer() const

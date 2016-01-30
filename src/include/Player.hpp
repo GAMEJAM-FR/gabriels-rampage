@@ -6,10 +6,10 @@
 class Player : public Character
 {
 public:
-  void left();
-  void up();
-  void right();
-  void down();
+  void left(GameWindow *);
+  void up(GameWindow *);
+  void right(GameWindow *);
+  void down(GameWindow *);
 public:
   Player(int, int);
   Player(Player const&);
@@ -19,14 +19,6 @@ public:
 
   void attack(GameWindow *);
   void specialAttack(GameWindow *);
-};
-
-void (Player:: *move[4])() =
-{
-  &Player::left,
-  &Player::up,
-  &Player::right,
-  &Player::down
 };
 
 #endif /* !PLAYER_HPP_ */

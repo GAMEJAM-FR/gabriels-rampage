@@ -128,6 +128,16 @@ void Character::setX(int x)
   this->_x = x;
 }
 
+int Character::getY() const
+{
+  return (this->_y);
+}
+
+void Character::setY(int y)
+{
+  this->_y = y;
+}
+
 unsigned int Character::getHp() const
 {
   return (this->_hp);

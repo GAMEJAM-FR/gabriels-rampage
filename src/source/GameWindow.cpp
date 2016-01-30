@@ -154,12 +154,18 @@ Character &GameWindow::getPlayer() const
 
 bool GameWindow::checkProjectile(const Projectile &ejac)
 {
-  unsigned int ct = 0;
+  unsigned int ct = 1;
 
   while (ct < this->_entities.size())
     {
-      if ()
-	return (true);
+      if (ejac.getX() >= this->_entities[ct]->getX() - (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getX() <= this->_entities[ct]->getX() + (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getY() >= this->_entities[ct]->getY() - (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getY() <= this->_entities[ct]->getY() + (int)this->_entities[ct]->getHitbox())
+	{
+	  this->_entities[ct]->takeDamage(ejac.getDamage());
+	  return (true);
+	}
       ct++;
     }
   return (false);

@@ -6,20 +6,37 @@
 
 class Character
 {
+protected:
+  enum Direction
+    {
+      LEFT,
+      UP,
+      RIGHT,
+      DOWN
+    };
+  
 public:
-  Character(unsigned int hp = 1, unsigned int attack = 1, float frequence = 1, unsigned int speed = 10,
+  Character(int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
+	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 10,
 	    unsigned int hitbox = 5, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   ~Character();
 
   Character& operator=(Character const&);
 
+  virtual void attack(Character *);
+  void takeDamage(unsigned int);
+  
+  int getX() const;
+  void setX(int);
+  int getY() const;
+  void setY(int);
   unsigned int getHp() const;
   void setHp(unsigned int);
   unsigned int getAttack() const;
   void setAttack(unsigned int);
-  float getFrequence() const;
-  void setFrequence(float);
+  float getFrequency() const;
+  void setFrequency(float);
   unsigned int getSpeed() const;
   void setSpeed(unsigned int);
   unsigned int getHitbox() const;
@@ -32,9 +49,12 @@ public:
   void setFly(bool);
 
 protected:
+  int _x;
+  int _y;
+  Direction _direction;
   unsigned int _hp;
   unsigned int _attack;
-  float _frequence;
+  float _frequency;
   unsigned int _speed;
   unsigned int _hitbox;
   unsigned int _range;

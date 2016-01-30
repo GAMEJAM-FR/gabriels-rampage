@@ -93,6 +93,7 @@ void GameWindow::update(float time)
       this->_entities[0]->update(this, time);
       ct++;
     }
+  this->_window->setView(*this->_view);  
 }
 
 void GameWindow::draw()

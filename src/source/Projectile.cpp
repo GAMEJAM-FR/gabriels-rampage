@@ -5,8 +5,8 @@ Projectile::Projectile(int x, int y, int damage, Direction direction) :
   _baseY((float)y),
   _x((float)x),
   _y((float)y),
-  _damage(_damage),
-  _direction(_direction)
+  _damage(damage),
+  _direction(direction)
 {
   this->_range = 0;
   this->_speed = 100;
@@ -17,8 +17,8 @@ Projectile::Projectile(int x, int y, int damage, Direction direction, int range)
   _baseY((float)y),
   _x((float)x),
   _y((float)y),
-  _damage(_damage),
-  _direction(_direction),
+  _damage(damage),
+  _direction(direction),
   _range(range)
 {
   this->_speed = 100;

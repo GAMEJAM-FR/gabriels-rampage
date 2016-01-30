@@ -14,8 +14,6 @@ wrap::Sprite::Sprite(const std::string &path, unsigned int x, unsigned int y, bo
 
 wrap::Sprite::~Sprite()
 {
-  delete this->_sprite;
-  delete this->_texture;
 }
 
 sf::Sprite &wrap::Sprite::operator*()

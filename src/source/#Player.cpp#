@@ -1,4 +1,4 @@
-#include "Player.hpp"
+*#include "Player.hpp"
 
 Player::Player(int x, int y) : Character(x, y, UP, 15, 10, 0.5, 1, 5, tMonk, 25, false)
 {

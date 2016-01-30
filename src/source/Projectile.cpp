@@ -9,9 +9,10 @@ Projectile::Projectile(int x, int y, int damage, Direction direction) :
   _damage(damage),
   _speed(100),
   _range(0),
-  _direction(direction)
+  _direction(direction),
+  _sprite(tBall, x, y, false)
 {
-  this->_sprite = new wrap::Sprite(tBall, this->_x, this->_y, false);
+
 }
 
 Projectile::Projectile(int x, int y, int damage, Direction direction, int range) :
@@ -22,9 +23,10 @@ Projectile::Projectile(int x, int y, int damage, Direction direction, int range)
   _damage(damage),
   _speed(100),
   _range(range),
-  _direction(direction)
+  _direction(direction),
+  _sprite(tBall, x, y, false)
 {
-  this->_sprite = new wrap::Sprite(tBall, this->_x, this->_y, false);
+
 }
 
 Projectile::Projectile(Projectile const& copy) :
@@ -77,7 +79,12 @@ bool Projectile::move(float time)
     setX(this->_x + this->_direction * time);
   else
     setY(this->_y + this->_direction * time);
-  if ((this->_x - this->_baseX) + (this->_y - this->_baseY) >= this->_range)
+  /*if (this->_range == 0)
+    {
+      if (this->_x < 0 || this->_y < 0 || this->_x > win->getWidth() || this->_y > win->getHeight())
+	return (true);
+    }
+    else */if ((this->_x - this->_baseX) + (this->_y - this->_baseY) >= this->_range)
     return (true);
   return (false);
 }
@@ -90,7 +97,7 @@ int Projectile::getX() const
 void Projectile::setX(int newX)
 {
   this->_x = newX;
-  this->_sprite->setPos(this->_x, this->_y);
+  this->_sprite.setPos(this->_x, this->_y);
 }
 
 int Projectile::getY() const
@@ -101,7 +108,7 @@ int Projectile::getY() const
 void Projectile::setY(int newY)
 {
   this->_y = newY;
-  this->_sprite->setPos(this->_x, this->_y);
+  this->_sprite.setPos(this->_x, this->_y);
 }
 
 int Projectile::getDamage() const

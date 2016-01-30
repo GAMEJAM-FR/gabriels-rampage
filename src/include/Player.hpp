@@ -17,11 +17,12 @@ public:
 
   Player& operator=(Player const&);
 
+  void update(GameWindow *, float);
   void attack(GameWindow *);
   void specialAttack(GameWindow *);
 
 private:
-  std::vector<Projectile *> _projectiles;
+  std::vector<Projectile> _projectiles;
 };
 
 #endif /* !PLAYER_HPP_ */

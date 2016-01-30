@@ -11,7 +11,7 @@ class Character
 public:
   Character(int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
 	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
-	    unsigned int hitbox = 5, unsigned int range = 5, bool fly = false);
+	    unsigned int hitbox = 5, const std::string &path = tMonk, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   virtual ~Character();
 
@@ -52,7 +52,7 @@ protected:
   unsigned int _speed;
   unsigned int _hitbox;
   unsigned int _range;
-  wrap::Sprite *_sprite;
+  wrap::Sprite _sprite;
   bool _fly;
   sf::Clock _cooldown;
   int _idx;

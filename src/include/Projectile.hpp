@@ -38,7 +38,7 @@ private:
   float _speed;
   int _range;
   Direction _direction;
-  wrap::Sprite *_sprite;
+  wrap::Sprite _sprite;
 
   bool move(float);
 };

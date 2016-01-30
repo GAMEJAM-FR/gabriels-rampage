@@ -35,6 +35,8 @@ const std::string tTest =
   "asset/Plain.png";
 const std::string tMonk =
   "asset/monk.png";
+const std::string tBall =
+  "asset/ball.png";
 
 /*
  * font paths

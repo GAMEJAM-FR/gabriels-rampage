@@ -2,7 +2,7 @@
 
 Character::Character(int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
-		     unsigned int hitbox, unsigned int range, bool fly) :
+		     unsigned int hitbox, const std::string &path, unsigned int range, bool fly) :
   _x((float)x),
   _y((float)y),
   _direction(direction),
@@ -12,6 +12,7 @@ Character::Character(int x, int y, Direction direction, unsigned int hp,
   _speed(speed),
   _hitbox(hitbox),
   _range(range),
+  _sprite(path, x, y, false),
   _fly(fly),
   _idx(0)
 {
@@ -28,6 +29,7 @@ Character::Character(Character const& copy) :
   _speed(copy._speed),
   _hitbox(copy._hitbox),
   _range(copy._range),
+  _sprite(copy._sprite),
   _fly(copy._fly),
   _idx(copy._idx)
 {
@@ -104,7 +106,7 @@ void Character::update(GameWindow *win, float time)
     }
   if (!attack(win->getPlayer()))
     moveIA(win->getCollision(), win->getPlayer(), time);
-  (**this->_sprite).setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
+  (*this->_sprite).setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
 }
 
 void Character::moveIA(sf::Image collision, const Character &player, float time)
@@ -160,7 +162,7 @@ int Character::getX() const
 void Character::setX(int x)
 {
   this->_x = x;
-  this->_sprite->setPos(this->_x, this->_y);
+  this->_sprite.setPos(this->_x, this->_y);
 }
 
 int Character::getY() const
@@ -171,7 +173,7 @@ int Character::getY() const
 void Character::setY(int y)
 {
   this->_y = y;
-  this->_sprite->setPos(this->_x, this->_y);
+  this->_sprite.setPos(this->_x, this->_y);
 }
 
 unsigned int Character::getHp() const

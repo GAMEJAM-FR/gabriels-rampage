@@ -50,7 +50,7 @@ Character& Character::operator=(Character const& copy)
   return (*this);
 }
 
-void Character::attack(Character *enemy)
+void Character::attack(Character*& enemy)
 {
   //Add frequency
   if (this->_direction == LEFT)

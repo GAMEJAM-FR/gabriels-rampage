@@ -24,7 +24,7 @@ public:
 
   Character& operator=(Character const&);
 
-  virtual void attack(Character *);
+  virtual void attack(Character *&);
   void takeDamage(unsigned int);
   
   int getX() const;

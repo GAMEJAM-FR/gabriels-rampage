@@ -52,30 +52,33 @@ Character& Character::operator=(Character const& copy)
 
 void Character::attack(Character*& enemy)
 {
-  //Add frequency
-  if (this->_direction == LEFT)
+  if ((float) (this->_cooldown.getElapsedTime()).asMilliseconds() / 1000 > this->_frequency)
     {
-      if (this->_x - (enemy->_x + this->_hitbox) <= this->_range + this->_hitbox &&
-	  this->_x - (enemy->_x + (int)this->_hitbox) >= 0)
-	enemy->takeDamage(this->_attack);
-    }
-  else if (this->_direction == UP)
-    {
-      if (this->_y - (enemy->_y + this->_hitbox) <= this->_range + this->_hitbox &&
-	  this->_y - (enemy->_y + (int)this->_hitbox) >= 0)
-	enemy->takeDamage(this->_attack);
-    }
-  else if (this->_direction == RIGHT)
-    {
-      if ((enemy->_x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
-	  (enemy->_x - (int)this->_hitbox) - this->_x >= 0)
-	enemy->takeDamage(this->_attack);
-    }
-  else
-    {
-      if ((enemy->_y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
-	  (enemy->_y - (int)this->_hitbox) - this->_y >= 0)
-	enemy->takeDamage(this->_attack);
+      this->_cooldown.restart();
+      if (this->_direction == LEFT)
+	{
+	  if (this->_x - (enemy->_x + this->_hitbox) <= this->_range + this->_hitbox &&
+	      this->_x - (enemy->_x + (int)this->_hitbox) >= 0)
+	    enemy->takeDamage(this->_attack);
+	}
+      else if (this->_direction == UP)
+	{
+	  if (this->_y - (enemy->_y + this->_hitbox) <= this->_range + this->_hitbox &&
+	      this->_y - (enemy->_y + (int)this->_hitbox) >= 0)
+	    enemy->takeDamage(this->_attack);
+	}
+      else if (this->_direction == RIGHT)
+	{
+	  if ((enemy->_x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
+	      (enemy->_x - (int)this->_hitbox) - this->_x >= 0)
+	    enemy->takeDamage(this->_attack);
+	}
+      else
+	{
+	  if ((enemy->_y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
+	      (enemy->_y - (int)this->_hitbox) - this->_y >= 0)
+	    enemy->takeDamage(this->_attack);
+	}
     }
 }
 
@@ -84,9 +87,10 @@ void Character::takeDamage(unsigned int damage)
   this->_hp = (damage >= this->_hp ? 0 : this->_hp - damage);
 }
 
-void Character::update()
+void Character::update(GameWindow *win, float time)
 {
-  
+  (void) win;
+  (void) time;
 }
 
 int Character::getX() const

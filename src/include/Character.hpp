@@ -26,7 +26,7 @@ public:
 
   virtual void attack(Character *&);
   void takeDamage(unsigned int);
-  virtual void update();
+  virtual void update(GameWindow *, float);
   
   int getX() const;
   void setX(int);
@@ -61,6 +61,7 @@ protected:
   unsigned int _range;
   std::vector<sf::Sprite *> _sprites;
   bool _fly;
+  sf::Clock _cooldown;
 };
 
 #endif /* !CHARACTER_HPP_ */

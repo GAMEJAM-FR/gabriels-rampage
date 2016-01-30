@@ -84,6 +84,11 @@ void Character::takeDamage(unsigned int damage)
   this->_hp = (damage >= this->_hp ? 0 : this->_hp - damage);
 }
 
+void Character::update()
+{
+  
+}
+
 int Character::getX() const
 {
   return (this->_x);

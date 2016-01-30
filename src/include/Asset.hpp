@@ -18,6 +18,9 @@ namespace wrap
     unsigned int _yOffset;
     Asset(unsigned int x, unsigned int y) : _x(x), _y(y) {}
     virtual ~Asset() {}
+  public:
+    unsigned int getWidth() const;
+    unsigned int getHeigth() const;
   };
 
   class Sprite : public Asset

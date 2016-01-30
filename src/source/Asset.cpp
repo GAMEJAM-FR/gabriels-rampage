@@ -79,3 +79,13 @@ sf::Music &wrap::Music::operator*()
 {
   return (*this->_music);
 }
+
+unsigned int wrap::Asset::getWidth() const
+{
+  return (this->_width);
+}
+
+unsigned int wrap::Asset::getHeigth() const
+{
+  return (this->_height);
+}

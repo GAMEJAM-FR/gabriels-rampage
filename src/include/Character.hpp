@@ -26,6 +26,7 @@ public:
 
   virtual void attack(Character *&);
   void takeDamage(unsigned int);
+  virtual void update();
   
   int getX() const;
   void setX(int);

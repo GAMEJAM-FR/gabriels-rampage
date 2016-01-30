@@ -93,10 +93,10 @@ void Character::takeDamage(unsigned int damage)
 void Character::update(GameWindow *win, float time)
 {
   if (!attack(win->getPlayer()))
-    moveIA(win->getPlayer(), time);
+    moveIA(win->getCollision(), win->getPlayer(), time);
 }
 
-void Character::moveIA(const Character &player, float time)
+void Character::moveIA(sf::Image collision, const Character &player, float time)
 {
   float	x;
   float	y;
@@ -105,17 +105,40 @@ void Character::moveIA(const Character &player, float time)
     return ;
   x = (float)player.getX() - this->_x;
   y = (float)player.getY() - this->_y;
-  collide(this->_x + (x / (x + y)) * this->_speed * time,
+  collide(collision, this->_x + (x / (x + y)) * this->_speed * time,
 	  this->_y + (y / (x + y)) * this->_speed * time);
 }
 
-void Character::collide(float newX, float newY)
+void Character::collide(sf::Image collision, float newX, float newY)
 {
-  this->_x = newX;
-  this->_y = newY;
-  //
-  // !!! Need collision !!!
-  //
+  while (this->_x < newX && newX < collision.getSize().x)
+    {
+      if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
+	this->_x++;
+      else
+	break ;
+    }
+  while (this->_y < newY && newY < collision.getSize().y)
+    {
+      if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
+	this->_y++;
+      else
+	break ;
+    }
+  while (this->_x > newX && newX >= 0)
+    {
+      if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
+	this->_x--;
+      else
+	break ;
+    }
+  while (this->_y > newY && newY >= 0)
+    {
+      if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
+	this->_y--;
+      else
+	break ;
+    }
 }
 
 int Character::getX() const

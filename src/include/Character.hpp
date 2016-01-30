@@ -29,8 +29,8 @@ public:
   virtual bool attack(Character &);
   void takeDamage(unsigned int);
   virtual void update(GameWindow *, float);
-  void moveIA(const Character &, float);
-  void collide(float, float);
+  void moveIA(sf::Image, const Character &, float);
+  void collide(sf::Image, float, float);
   
   int getX() const;
   void setX(int);

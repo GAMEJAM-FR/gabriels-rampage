@@ -20,10 +20,14 @@ GameWindow::GameWindow() :
   _texts(std::vector<wrap::Text *>()),
   _musics(std::vector<wrap::Music *>()),
   _entities(std::vector<Character *>()),
-  _view(new sf::View)
+  _view(new sf::View),
+  _collision(new sf::Image)
 {
-  this->_view->setCenter(42, 42);
-  this->_entities.push_back(new Player(42, 42));
+  this->_window->setVerticalSyncEnabled(true);
+  this->_view->setCenter(420, 420);
+  this->_view->zoom(0.2f);
+  this->_collision->loadFromFile(iCollision);
+  this->_entities.push_back(new Player(420, 420));
 }
 
 GameWindow::~GameWindow()
@@ -159,6 +163,11 @@ void GameWindow::setView(int x, int y)
 Character &GameWindow::getPlayer() const
 {
   return (*this->_entities[0]);
+}
+
+sf::Image GameWindow::getCollision() const
+{
+  return (*this->_collision);
 }
 
 bool GameWindow::checkProjectile(const Projectile &ejac)

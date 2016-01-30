@@ -20,6 +20,7 @@ private:
   std::vector<wrap::Music *> _musics;
   std::vector<Character *> _entities;
   sf::View *_view;
+  sf::Image *_collision;
   sf::Event _event;
 public:
   GameWindow();
@@ -43,6 +44,7 @@ public:
 public:
   void setView(int, int);
   Character &getPlayer() const;
+  sf::Image getCollision() const;
 };
 
 #endif /* GAMEWINDOW_HPP_ */

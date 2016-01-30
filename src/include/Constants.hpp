@@ -31,7 +31,7 @@ enum Direction
  * texture paths
  */
 const std::string tTest =
-  "asset/map.jpg";
+  "asset/Plain.png";
 
 /*
  * font paths
@@ -44,5 +44,9 @@ const std::string fTest =
  */
 const std::string mTest =
   "asset/nice_music.wav";
+
+
+const std::string iCollision =
+  "asset/plain_schema.png";
 
 #endif /* CONSTANTS_HPP_ */

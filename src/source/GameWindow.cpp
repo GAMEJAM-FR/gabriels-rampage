@@ -83,14 +83,21 @@ void GameWindow::draw()
 
 void GameWindow::loop(unsigned int fps)
 {
-  (void)fps;
+  sf::Clock clock;
+  sf::Time t = sf::milliseconds(1 / (float) fps);
+  
   if (this->_musics.size() > 0)
     (**this->_musics[0]).play();
   while (this->_window->isOpen())
     {
-      this->input();
-      this->update();
-      this->draw();
+      t = clock.getElapsedTime();
+      if ((float)t.asMilliseconds() / 1000 >= 1 / (float)fps)
+	{
+	  clock.restart();
+	  this->input();
+	  this->update();
+	  this->draw();
+	}
     }
 }
 

@@ -4,6 +4,8 @@
 # include <SFML/Graphics.hpp>
 # include <vector>
 
+# include "GameWindow.hpp"
+
 class Character
 {
 protected:
@@ -17,16 +19,18 @@ protected:
   
 public:
   Character(int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
-	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 10,
+	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
 	    unsigned int hitbox = 5, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   ~Character();
 
   Character& operator=(Character const&);
 
-  virtual void attack(Character *&);
+  virtual bool attack(Character *&);
   void takeDamage(unsigned int);
   virtual void update(GameWindow *, float);
+  void moveIA(const Character *&, float);
+  void collide(float, float);
   
   int getX() const;
   void setX(int);
@@ -50,8 +54,8 @@ public:
   void setFly(bool);
 
 protected:
-  int _x;
-  int _y;
+  float _x;
+  float _y;
   Direction _direction;
   unsigned int _hp;
   unsigned int _attack;

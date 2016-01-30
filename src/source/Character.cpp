@@ -3,8 +3,8 @@
 Character::Character(int x, int y, Character::Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
 		     unsigned int hitbox, unsigned int range, bool fly) :
-  _x(x),
-  _y(y),
+  _x((float)x),
+  _y((float)y),
   _direction(direction),
   _hp(hp),
   _attack(attack),
@@ -50,8 +50,10 @@ Character& Character::operator=(Character const& copy)
   return (*this);
 }
 
-void Character::attack(Character*& enemy)
+bool Character::attack(Character*& enemy)
 {
+  if (this->_hp <= 0)
+    return (false);
   if ((float) (this->_cooldown.getElapsedTime()).asMilliseconds() / 1000 > this->_frequency)
     {
       this->_cooldown.restart();
@@ -59,27 +61,28 @@ void Character::attack(Character*& enemy)
 	{
 	  if (this->_x - (enemy->_x + this->_hitbox) <= this->_range + this->_hitbox &&
 	      this->_x - (enemy->_x + (int)this->_hitbox) >= 0)
-	    enemy->takeDamage(this->_attack);
+	    return (enemy->takeDamage(this->_attack), true);
 	}
       else if (this->_direction == UP)
 	{
 	  if (this->_y - (enemy->_y + this->_hitbox) <= this->_range + this->_hitbox &&
 	      this->_y - (enemy->_y + (int)this->_hitbox) >= 0)
-	    enemy->takeDamage(this->_attack);
+	    return (enemy->takeDamage(this->_attack), true);
 	}
       else if (this->_direction == RIGHT)
 	{
 	  if ((enemy->_x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
 	      (enemy->_x - (int)this->_hitbox) - this->_x >= 0)
-	    enemy->takeDamage(this->_attack);
+	    return (enemy->takeDamage(this->_attack), true);
 	}
       else
 	{
 	  if ((enemy->_y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
 	      (enemy->_y - (int)this->_hitbox) - this->_y >= 0)
-	    enemy->takeDamage(this->_attack);
+	    return (enemy->takeDamage(this->_attack), true);
 	}
     }
+  return (false);
 }
 
 void Character::takeDamage(unsigned int damage)
@@ -89,8 +92,30 @@ void Character::takeDamage(unsigned int damage)
 
 void Character::update(GameWindow *win, float time)
 {
-  (void) win;
-  (void) time;
+  if (!attack(win->getPlayer()))
+    moveIA(win->getPlayer(), time);
+}
+
+void Character::moveIA(const Character *&player, float time)
+{
+  float	x;
+  float	y;
+
+  if (this->_hp <= 0)
+    return ;
+  x = (float)player->getX() - this->_x;
+  y = (float)player->getY() - this->_y;
+  collide(this->_x + (x / (x + y)) * this->_speed * time,
+	  this->_y + (y / (x + y)) * this->_speed * time);
+}
+
+void Character::collide(float newX, float newY)
+{
+  this->_x = newX;
+  this->_y = newY;
+  //
+  // !!! Need collision !!!
+  //
 }
 
 int Character::getX() const

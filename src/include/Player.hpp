@@ -6,12 +6,12 @@
 class Player : public Character
 {
 private:
-  void left(int, int);
-  void up(int, int);
-  void right(int, int);
-  void down(int, int);
+  void left(unsigned int);
+  void up(unsigned int);
+  void right(unsigned int);
+  void down(unsigned int);
 public:
-  void (Player:: *move[4])(int, int) =
+  void (Player:: *move[4])(unsigned int) =
   {
     &Player::left,
     &Player::up,
@@ -24,6 +24,9 @@ public:
   ~Player();
 
   Player& operator=(Player const&);
+
+  void attack(GameWindow *&);
+  void specialAttack(GameWindow *&);
 };
 
 #endif /* !PLAYER_HPP_ */

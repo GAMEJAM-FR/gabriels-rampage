@@ -20,3 +20,33 @@ Player& Player::operator=(Player const& copy)
   (void) copy;
   return (*this);
 }
+
+void Player::left(unsigned int time)
+{
+  collide(this->_x - (this->_speed * time), this->_y);
+}
+
+void Player::up(unsigned int time)
+{
+  collide(this->_x, this->_y - (this->_speed * time));
+}
+
+void Player::right(unsigned int time)
+{
+  collide(this->_x + (this->_speed * time), this->_y);
+}
+
+void Player::left(unsigned int time)
+{
+  collide(this->_x, this->_y + (this->_speed * time));
+}
+
+void Player::attack(GameWindow *&)
+{
+  
+}
+
+void Player::specialAttack(GameWindow *&)
+{
+  
+}

@@ -19,6 +19,9 @@ GameWindow::GameWindow() :
   this->_view.setCenter(420, 420);
   this->_view.zoom(0.2f);
   this->_entities.push_back(new Player(this, 420, 420));
+  this->_ritual.maxTime = 120000;
+  this->_ritual.maxEnemy = 30;
+  this->_ritual.deadEnemy = 0;
 }
 
 GameWindow::~GameWindow()
@@ -75,6 +78,7 @@ void GameWindow::update(float time)
 	    {
 	      if (*it == this->_entities[ct]->_sprite)
 		{
+		  this->_ritual.deadEnemy++;
 		  this->_sprites.erase(it);
 		  delete this->_entities[ct]->_sprite;
 		  break ;
@@ -139,6 +143,10 @@ void GameWindow::loop(unsigned int fps)
 	  this->update((float)t.asMilliseconds() / 1000);
 	  this->draw();
 	}
+      if ((unsigned int)this->_ritual.current.getElapsedTime().asMilliseconds() >= this->_ritual.maxTime)
+	break ;
+      else if (this->_ritual.deadEnemy >= this->_ritual.maxEnemy)
+	break ;
     }
 }
 

@@ -6,6 +6,14 @@
 # include "Projectile.hpp"
 # include "Asset.hpp"
 
+typedef struct Retual
+{
+  sf::Clock current;
+  unsigned int maxTime;
+  unsigned int maxEnemy;
+  unsigned int deadEnemy;
+} Ritual;
+
 class GameWindow
 {
 private:
@@ -24,6 +32,7 @@ public:
   std::vector<wrap::Text> _texts;
   std::vector<wrap::Music> _musics;
   std::vector<Character *> _entities;
+  Ritual _ritual;
 public:
   GameWindow();
   ~GameWindow();

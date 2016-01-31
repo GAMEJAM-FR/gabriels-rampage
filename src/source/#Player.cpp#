@@ -2,7 +2,7 @@
 #include "GameWindow.hpp"
 #include <iostream>
 
-Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.5, 1, Pl / 2, tMonk, 45, false)
+Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.5, 1, 5, tMonk, 45, false)
 {
   this->_sprite->_sprite.setTextureRect(sf::IntRect(0, 0, Pl, Pl));
 }
@@ -39,7 +39,7 @@ void Player::up(GameWindow *win)
 
 void Player::right(GameWindow *win)
 {
-  collide(win->getCollision(), this->_x + this->_speed, this->_y);
+ 0 collide(win->getCollision(), this->_x + this->_speed, this->_y);
   win->setView(this->_x, this->_y);
   this->_direction = RIGHT;
 }

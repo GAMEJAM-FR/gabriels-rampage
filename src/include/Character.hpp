@@ -14,7 +14,7 @@ class Character
 public:
   Character(GameWindow *win, int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
 	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
-	    unsigned int hitbox = 5, const std::string &path = tAcolyte, unsigned int range = 5, bool fly = false);
+	    unsigned int hitbox = Al / 2, const std::string &path = tAcolyte, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   virtual ~Character();
 

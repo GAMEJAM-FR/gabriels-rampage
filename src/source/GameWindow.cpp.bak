@@ -1,8 +1,6 @@
 #include <iostream>
 #include "GameWindow.hpp"
 #include "Player.hpp"
-#include <stdlib.h>
-#include <time.h>
 
 void (Player:: *move[4])(GameWindow *) =
 {
@@ -22,7 +20,6 @@ GameWindow::GameWindow() :
   this->_ritual.maxTime = 120000;
   this->_ritual.maxEnemy = 30;
   this->_ritual.deadEnemy = 0;
-  srand(time(NULL));
 }
 
 GameWindow::~GameWindow()
@@ -51,35 +48,29 @@ void GameWindow::input()
 	  this->_width = this->_event.size.width;
 	  this->_height = this->_event.size.height;
 	}
-      if (this->_iText->_text.getString() == "Title Screen" &&
-	  this->_event.type == sf::Event::KeyPressed)
+      if (this->_event.type == sf::Event::KeyPressed)
 	{
-	  init(new wrap::Sprite(tTest, 0, 0, true),
-	       new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
-	       new wrap::Music(mTest, true),
-	       new wrap::Image(iCollision));
-	  this->_entities.push_back(new Player(this, 420, 420));
-	  this->_view.setCenter(420, 420);
-	  this->_view.zoom(0.2f);
+	  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	    {
+	      this->_window->close();
+	      return ;
+	    }
+	  else if (this->_iText->_text.getString() == "Title Screen")
+	    {
+	      init(new wrap::Sprite(tTest, 0, 0, true),
+		   new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
+		   new wrap::Music(mTest, true),
+		   new wrap::Image(iCollision));
+	      this->_entities.push_back(new Player(this, 420, 420));
+	      this->_view.setCenter(420, 420);
+	      this->_view.zoom(0.2f);
+	    }
+	  else if (this->_iText->_text.getString() == "Dead Screen")
+	    {
+	      this->_window->close();
+	      return ;
+	    }
 	}
-    }
-}
-
-void GameWindow::spawnArea()
-{
-  int x, y;
-
-  if (rand() % 100 < 42)
-    {
-      x = rand() % this->_width;
-      y = rand() % this->_height;
-      while (this->_iCollision->_collision.getPixel(x, y) == sf::Color::Red)
-	{
-	  x = rand() % this->_width;
-	  y = rand() % this->_height;
-	}
-      this->_entities.push_back(new Character(this, x, y));
-      std::cout << "BITE\n";
     }
 }
 
@@ -103,6 +94,17 @@ void GameWindow::update(float time)
     {
       if (this->_entities[ct]->getHp() <= 0)
 	{
+	  if (ct == 0)
+	    {
+	      init(new wrap::Sprite(tTest, 0, 0, true),
+		   new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
+		   new wrap::Music(mTest, true),
+		   new wrap::Image(iCollision));
+	      this->_entities.clear();
+	      this->_view.setCenter(this->_iSprite->getWidth() / 2, this->_iSprite->getHeight() / 2);
+	      this->_view.zoom(2);
+	      return ;
+	    }
 	  it = this->_sprites.begin();
 	  while (it != this->_sprites.end())
 	    {
@@ -163,8 +165,6 @@ void GameWindow::loop(unsigned int fps)
 	  ct++;
 	  if (clock2.getElapsedTime().asSeconds() >= 1)
 	    {
-	      if (this->_iText->_text.getString() != "Title Screen")
-		this->spawnArea();
 	      std::cout << "fps: " << ct << std::endl;
 	      ct = 0;
 	      clock2.restart();
@@ -230,10 +230,10 @@ bool GameWindow::checkProjectile(const Projectile &ejac)
 
   while (ct < this->_entities.size())
     {
-      if (ejac.getX() >= this->_entities[ct]->getX() &&
-	  ejac.getX() <= this->_entities[ct]->getX() + 2 * (int)this->_entities[ct]->getHitbox() &&
-	  ejac.getY() >= this->_entities[ct]->getY() &&
-	  ejac.getY() <= this->_entities[ct]->getY() + 2 * (int)this->_entities[ct]->getHitbox())
+      if (ejac.getX() >= this->_entities[ct]->getX() - (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getX() <= this->_entities[ct]->getX() + (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getY() >= this->_entities[ct]->getY() - (int)this->_entities[ct]->getHitbox() &&
+	  ejac.getY() <= this->_entities[ct]->getY() + (int)this->_entities[ct]->getHitbox())
 	{
 	  this->_entities[ct]->takeDamage(ejac.getDamage());
 	  return (true);

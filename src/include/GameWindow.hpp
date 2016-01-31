@@ -20,7 +20,7 @@ private:
   wrap::Music *_iMusic;
   wrap::Image *_iCollision;
 public:
-  std::vector<wrap::Sprite> _sprites;
+  std::vector<wrap::Sprite*> _sprites;
   std::vector<wrap::Text> _texts;
   std::vector<wrap::Music> _musics;
   std::vector<Character *> _entities;
@@ -40,6 +40,8 @@ public:
   void setView(int, int);
   Character &getPlayer();
   const sf::Image &getCollision();
+  unsigned int getWidth();
+  unsigned int getHeight();
 };
 
 #endif /* GAMEWINDOW_HPP_ */

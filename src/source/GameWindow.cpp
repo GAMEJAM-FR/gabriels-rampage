@@ -80,8 +80,7 @@ void GameWindow::draw()
   this->_window->clear();
   while (ct < this->_sprites.size())
     {
-      if (ct != 0)
-	this->_window->draw(this->_sprites[ct]._sprite);
+      this->_window->draw(this->_sprites[ct]->_sprite);
       ct++;
     }
   ct = 0;
@@ -100,7 +99,7 @@ void GameWindow::loop(unsigned int fps)
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
 
-  this->_sprites.insert(this->_sprites.begin(), *this->_iSprite);
+  this->_sprites.insert(this->_sprites.begin(), this->_iSprite);
   this->_texts.push_back(*this->_iText);
   this->_iMusic->_music.play();
   while (this->_window->isOpen())
@@ -145,6 +144,16 @@ Character &GameWindow::getPlayer()
 const sf::Image &GameWindow::getCollision()
 {
   return (this->_iCollision->_collision);
+}
+
+unsigned int GameWindow::getWidth()
+{
+  return (this->_width);
+}
+
+unsigned int GameWindow::getHeight()
+{
+  return (this->_height);
 }
 
 bool GameWindow::checkProjectile(const Projectile &ejac)

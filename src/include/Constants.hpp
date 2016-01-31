@@ -28,12 +28,13 @@ enum Direction
   };
 
 /*
- * texture paths
+ * texture const
  */
 const std::string tTest =
   "asset/Plain.png";
 const std::string tMonk =
   "asset/monk.png";
+const int Pl = 32;
 const std::string tBall =
   "asset/ball.png";
 

@@ -4,31 +4,34 @@
 # include "Constants.hpp"
 # include "Asset.hpp"
 
+# define ABS(i) i < 0 ? -i : i
+
 class GameWindow;
 
 class Projectile
 {
 public:
-  Projectile(int, int, int, Direction);
-  Projectile(int, int, int, Direction, int);
+  Projectile(GameWindow *, int, int, int, Direction);
+  Projectile(GameWindow *, int, int, int, Direction, int);
   Projectile(Projectile const&);
   ~Projectile();
 
   Projectile& operator=(Projectile const&);
 
   bool update(GameWindow *, float);
-  
+private:
+  bool move(GameWindow *, float);
+
+public:
   int getX() const;
-  void setX(int);
+  void setX(float);
   int getY() const;
-  void setY(int);
+  void setY(float);
   int getDamage() const;
   void setDamage(int);
   float getSpeed() const;
   void setSpeed(float);
-  Direction getDirection() const;
-  void setDirection(Direction);
-
+  
 private:
   float _baseX;
   float _baseY;
@@ -37,10 +40,9 @@ private:
   int _damage;
   float _speed;
   int _range;
-  Direction _direction;
-  wrap::Sprite _sprite;
-
-  bool move(float);
+  int _angle;
+public:
+  wrap::Sprite *_sprite;
 };
 
 #endif /* !PROJECTILE_HPP_ */

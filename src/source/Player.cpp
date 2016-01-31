@@ -2,7 +2,7 @@
 #include "GameWindow.hpp"
 #include <iostream>
 
-Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.75, 1, Pl / 2, tMonk, 70, false)
+Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 8, 0.75, 1, Pl / 2, tMonk, 70, false)
 {
   this->_sprite->_sprite.setTextureRect(sf::IntRect(0, 0, Pl, Pl));
 }

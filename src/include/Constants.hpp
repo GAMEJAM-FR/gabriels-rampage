@@ -44,6 +44,9 @@ const std::string tBall =
 const std::string tAcolyte =
   "asset/Acolyte.png";
 const int Al = 32;
+const std::string tBoss =
+  "asset/dragon.png";
+const int Bl = 96;
 
 /*
  * font paths

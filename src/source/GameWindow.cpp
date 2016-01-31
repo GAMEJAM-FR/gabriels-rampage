@@ -70,6 +70,7 @@ void GameWindow::input()
 		   new wrap::Music(mTest, true),
 		   new wrap::Image(iCollision));
 	      this->_entities.push_back(new Player(this, 420, 420));
+	      this->_entities.push_back(new Character(this, 440, 500, DOWN, 400, 5, 3, 60, Bl / 2, tBoss, 10, true));
 	      this->_view.setCenter(420, 420);
 	      this->_view.zoom(0.2f);
 	    }
@@ -175,7 +176,6 @@ void GameWindow::loop(unsigned int fps)
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
 
-  //this->_texts.push_back(*this->_iText);
   while (this->_window->isOpen())
     {
       t = clock.getElapsedTime();

@@ -127,7 +127,7 @@ void Character::update(GameWindow *win, float time)
       if (!attack(win->getPlayer()))
 	moveIA(win->getCollision(), win->getPlayer(), time);
     }
-  this->_sprite->_sprite.setTextureRect(sf::IntRect(this->_idx * Al, (int)this->_direction * Al, Al, Al));
+  this->_sprite->_sprite.setTextureRect(sf::IntRect(this->_idx * (this->_hitbox * 2), (int)this->_direction * this->_hitbox * 2, this->_hitbox * 2, this->_hitbox * 2));
 }
 
 #define ABS(A) (A < 0 ? -A : A)
@@ -163,42 +163,62 @@ void Character::collide(const sf::Image& collision, const float& newX, const flo
 {
   if (this->_x < newX)
   {
-    while (this->_x < newX && newX < collision.getSize().x)
+    if (this->_fly && newX < collision.getSize().x)
+      setX(newX);
+    else
       {
-	if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
-	  setX(this->_x + 0.1);
-	else
-	  break ;
+	while (this->_x < newX && newX < collision.getSize().x)
+	  {
+	    if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
+	      setX(this->_x + 0.1);
+	    else
+	      break ;
+	  }
       }
   }
   else
     {
-      while (this->_x > newX && newX >= 0)
+      if (this->_fly && newX >= 0)
+	setX(newX);
+      else
 	{
-	  if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
-	    setX(this->_x - 0.1);
-	  else
-	    break ;
+	  while (this->_x > newX && newX >= 0)
+	    {
+	      if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
+		setX(this->_x - 0.1);
+	      else
+		break ;
+	    }
 	}
     }
   if (this->_y < newY)
     {
-      while (this->_y < newY && newY < collision.getSize().y)
+      if (this->_fly && newY < collision.getSize().y)
+	setY(newY);
+      else
 	{
-	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
-	    setY(this->_y + 0.1);
-	  else
-	    break ;
+	  while (this->_y < newY && newY < collision.getSize().y)
+	    {
+	      if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
+		setY(this->_y + 0.1);
+	      else
+		break ;
+	    }
 	}
     }
   else
     {
-      while (this->_y > newY && newY >= 0)
+      if (this->_fly && newY >= 0)
+	setY(newY);
+      else
 	{
-	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
-	    setY(this->_y - 0.1);
-	  else
-	    break ;
+	  while (this->_y > newY && newY >= 0)
+	    {
+	      if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
+		setY(this->_y - 0.1);
+	      else
+		break ;
+	    }
 	}
     }
 }

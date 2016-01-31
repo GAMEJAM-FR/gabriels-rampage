@@ -1,8 +1,6 @@
-#include "GameWindow.hpp"
-#include "Constants.hpp"
-#include "Player.hpp"
-
 #include <iostream>
+#include "GameWindow.hpp"
+#include "Player.hpp"
 
 void (Player:: *move[4])(GameWindow *) =
 {
@@ -15,18 +13,11 @@ void (Player:: *move[4])(GameWindow *) =
 GameWindow::GameWindow() :
   _window(new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), TITLE)),
   _width(WIDTH),
-  _height(HEIGHT),
-  _sprites(std::vector<wrap::Sprite *>()),
-  _texts(std::vector<wrap::Text *>()),
-  _musics(std::vector<wrap::Music *>()),
-  _entities(std::vector<Character *>()),
-  _view(new sf::View),
-  _collision(new sf::Image)
+  _height(HEIGHT)
 {
   this->_window->setVerticalSyncEnabled(true);
-  this->_view->setCenter(420, 420);
-  this->_view->zoom(0.2f);
-  this->_collision->loadFromFile(iCollision);
+  this->_view.setCenter(420, 420);
+  this->_view.zoom(0.2f);
   this->_entities.push_back(new Player(420, 420));
 }
 
@@ -34,32 +25,12 @@ GameWindow::~GameWindow()
 {
   unsigned int ct = 0;
 
-  delete this->_window;
-  delete this->_view;
-  delete this->_collision;
-  while (ct < this->_sprites.size())
-    {
-      delete this->_sprites[ct];
-      ct++;
-    }
-  ct = 0;
-  while (ct < this->_texts.size())
-    {
-      delete this->_texts[ct];
-      ct++;
-    }
-  ct = 0;
-  while (ct < this->_musics.size())
-    {
-      delete this->_musics[ct];
-      ct++;
-    }
-  ct = 0;
   while (ct < this->_entities.size())
     {
       delete this->_entities[ct];
       ct++;
     }
+  delete this->_window;
 }
 
 void GameWindow::input()
@@ -75,7 +46,6 @@ void GameWindow::input()
 	{
 	  this->_width = this->_event.size.width;
 	  this->_height = this->_event.size.height;
-	  this->_window->setView(sf::View(sf::FloatRect(0, 0, this->_width, this->_height)));
 	}
     }
 }
@@ -100,7 +70,7 @@ void GameWindow::update(float time)
       this->_entities[0]->update(this, time);
       ct++;
     }
-  this->_window->setView(*this->_view);  
+  this->_window->setView(this->_view);
 }
 
 void GameWindow::draw()
@@ -110,13 +80,13 @@ void GameWindow::draw()
   this->_window->clear();
   while (ct < this->_sprites.size())
     {
-      this->_window->draw(**this->_sprites[ct]);
+      this->_window->draw(this->_sprites[ct]._sprite);
       ct++;
     }
   ct = 0;
   while (ct < this->_texts.size())
     {
-      this->_window->draw(**this->_texts[ct]);
+      this->_window->draw(this->_texts[ct]._text);
       ct++;
     }
   this->_window->display();
@@ -128,9 +98,10 @@ void GameWindow::loop(unsigned int fps)
   sf::Clock clock2;
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
-  
-  if (this->_musics.size() > 0)
-    (**this->_musics[0]).play();
+
+  this->_sprites.push_back(*this->_iSprite);
+  this->_texts.push_back(*this->_iText);
+  this->_iMusic->_music.play();
   while (this->_window->isOpen())
     {
       t = clock.getElapsedTime();
@@ -151,35 +122,28 @@ void GameWindow::loop(unsigned int fps)
     }
 }
 
-void GameWindow::add_sprite(const std::string &path, unsigned int x, unsigned int y, bool bg)
+void GameWindow::init(wrap::Sprite *s, wrap::Text *t,
+		      wrap::Music *m, wrap::Image *i)
 {
-  this->_sprites.push_back(new wrap::Sprite(path, x, y, bg));
-}
-
-void GameWindow::add_text(const std::string &content, const std::string &path,
-			  unsigned int size, unsigned int x, unsigned int y)
-{
-  this->_texts.push_back(new wrap::Text(content, path, size, x, y));
-}
-
-void GameWindow::add_music(const std::string &path, bool loop)
-{
-  this->_musics.push_back(new wrap::Music(path, loop));
+  this->_iSprite = s;
+  this->_iText = t;
+  this->_iMusic = m;
+  this->_iCollision = i;
 }
 
 void GameWindow::setView(int x, int y)
 {
-  this->_view->setCenter(x, y);
+  this->_view.setCenter(x, y);
 }
 
-Character &GameWindow::getPlayer() const
+Character &GameWindow::getPlayer()
 {
   return (*this->_entities[0]);
 }
 
-sf::Image GameWindow::getCollision() const
+const sf::Image &GameWindow::getCollision()
 {
-  return (*this->_collision);
+  return (this->_iCollision->_collision);
 }
 
 bool GameWindow::checkProjectile(const Projectile &ejac)

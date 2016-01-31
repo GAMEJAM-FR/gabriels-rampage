@@ -4,7 +4,10 @@
 # include <SFML/Graphics.hpp>
 # include <vector>
 
-# include "GameWindow.hpp"
+# include "Asset.hpp"
+# include "Constants.hpp"
+
+class GameWindow;
 
 class Character
 {

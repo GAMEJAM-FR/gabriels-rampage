@@ -9,7 +9,7 @@ SRC:=			$(SRCDIR)/main.cpp \
 OBJ:=			$(SRC:.cpp=.o)
 
 CXX:=			g++
-CXXFLAGS:=		-I include -W -Wall -Wextra -Werror
+CXXFLAGS:=		-I include -W -Wall -Wextra -Werror -g3
 LDFLAGS:=		-L /usr/lib/
 LDLIBS:=		-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 

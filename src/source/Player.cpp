@@ -1,8 +1,9 @@
 #include "Player.hpp"
+#include "GameWindow.hpp"
 
 Player::Player(int x, int y) : Character(x, y, UP, 15, 10, 0.5, 1, 5, tMonk, 25, false)
 {
-  (*this->_sprite).setTextureRect(sf::IntRect(0, 0, 24, 24));
+  this->_sprite._sprite.setTextureRect(sf::IntRect(0, 0, 24, 24));
 }
 
 Player::Player(Player const& copy) : Character(copy)

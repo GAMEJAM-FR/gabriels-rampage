@@ -1,4 +1,5 @@
 #include "Character.hpp"
+#include "GameWindow.hpp"
 
 Character::Character(int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
@@ -106,7 +107,7 @@ void Character::update(GameWindow *win, float time)
     }
   if (!attack(win->getPlayer()))
     moveIA(win->getCollision(), win->getPlayer(), time);
-  (*this->_sprite).setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
+  this->_sprite._sprite.setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
 }
 
 void Character::moveIA(sf::Image collision, const Character &player, float time)

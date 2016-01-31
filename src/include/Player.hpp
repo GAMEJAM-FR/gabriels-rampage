@@ -2,6 +2,7 @@
 # define PLAYER_HPP_
 
 # include "Character.hpp"
+# include "Projectile.hpp"
 
 class Player : public Character
 {

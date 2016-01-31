@@ -1,13 +1,10 @@
 #ifndef GAMEWINDOW_HPP_
 # define GAMEWINDOW_HPP_
 
-# include <vector>
-
-# include "Asset.hpp"
+# include <SFML/Graphics.hpp>
+# include "Character.hpp"
 # include "Projectile.hpp"
-
-class Character;
-class Player;
+# include "Asset.hpp"
 
 class GameWindow
 {
@@ -15,13 +12,18 @@ private:
   sf::RenderWindow *_window;
   unsigned int _width;
   unsigned int _height;
-  std::vector<wrap::Sprite *> _sprites;
-  std::vector<wrap::Text *> _texts;
-  std::vector<wrap::Music *> _musics;
-  std::vector<Character *> _entities;
-  sf::View *_view;
-  sf::Image *_collision;
+  sf::View _view;
   sf::Event _event;
+private:
+  wrap::Sprite *_iSprite;
+  wrap::Text *_iText;
+  wrap::Music *_iMusic;
+  wrap::Image *_iCollision;
+private:
+  std::vector<wrap::Sprite> _sprites;
+  std::vector<wrap::Text> _texts;
+  std::vector<wrap::Music> _musics;
+  std::vector<Character *> _entities;
 public:
   GameWindow();
   ~GameWindow();
@@ -31,20 +33,13 @@ private:
   void draw();
 public:
   void loop(unsigned int);
-  void add_sprite(const std::string &,
-		  unsigned int,
-		  unsigned int, bool);
-  void add_text(const std::string &,
-		const std::string &,
-		unsigned int,
-		unsigned int,
-		unsigned int);
-  void add_music(const std::string &, bool);
+  void init(wrap::Sprite *, wrap::Text *,
+	    wrap::Music *, wrap::Image *);
   bool checkProjectile(const Projectile &);
 public:
   void setView(int, int);
-  Character &getPlayer() const;
-  sf::Image getCollision() const;
+  Character &getPlayer();
+  const sf::Image &getCollision();
 };
 
 #endif /* GAMEWINDOW_HPP_ */

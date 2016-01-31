@@ -3,7 +3,6 @@
 
 # include <SFML/Audio.hpp>
 # include <SFML/Graphics.hpp>
-# include <string>
 
 namespace wrap
 {
@@ -16,8 +15,8 @@ namespace wrap
     unsigned int _height;
     unsigned int _xOffset;
     unsigned int _yOffset;
+    Asset() {}
     Asset(unsigned int x, unsigned int y) : _x(x), _y(y) {}
-    virtual ~Asset() {}
   public:
     unsigned int getWidth() const;
     unsigned int getHeigth() const;
@@ -26,36 +25,52 @@ namespace wrap
   class Sprite : public Asset
   {
   private:
-    sf::Texture *_texture;
-    sf::Sprite *_sprite;
+    sf::Texture _texture;
     bool _bg;
   public:
+    sf::Sprite _sprite;
+    Sprite() {}
     Sprite(const std::string &, unsigned int, unsigned int, bool);
-    ~Sprite();
-    sf::Sprite &operator*();
+    Sprite(const wrap::Sprite &);
+    wrap::Sprite &operator=(const wrap::Sprite &);
     void setPos(unsigned int, unsigned int);
   };
 
   class Text : public Asset
   {
   private:
-    sf::Font *_font;
-    sf::Text *_text;
+    sf::Font _font;
   public:
+    sf::Text _text;
+    Text() {}
     Text(const std::string &, const std::string &, unsigned int, unsigned int, unsigned int);
-    ~Text();
-    sf::Text &operator*();
+    Text(const wrap::Text &);
+    wrap::Text &operator=(const wrap::Text &);
     void setPos(unsigned int, unsigned int);
   };
 
   class Music
   {
   private:
-    sf::Music *_music;
+    std::string _path;
   public:
+    sf::Music _music;
+    Music() {}
+    Music(const wrap::Music &);
     Music(const std::string &, bool);
-    ~Music();
-    sf::Music &operator*();
+    wrap::Music &operator=(const wrap::Music &);
+  };
+
+  class Image
+  {
+  private:
+    std::string _path;
+  public:
+    sf::Image _collision;
+    Image() {}
+    Image(const wrap::Image &);
+    Image(const std::string &);
+    wrap::Image &operator=(const wrap::Image &);
   };
 }
 

@@ -1,4 +1,3 @@
-
 #ifndef CONSTANTS_HPP_
 # define CONSTANTS_HPP_
 
@@ -50,7 +49,9 @@ const std::string fTest =
 const std::string mTest =
   "asset/nice_music.wav";
 
-
+/*
+ * collision maps path
+ */
 const std::string iCollision =
   "asset/plain_schema.png";
 

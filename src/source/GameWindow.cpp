@@ -1,6 +1,8 @@
 #include <iostream>
 #include "GameWindow.hpp"
 #include "Player.hpp"
+#include <stdlib.h>
+#include <time.h>
 
 void (Player:: *move[4])(GameWindow *) =
 {
@@ -20,6 +22,7 @@ GameWindow::GameWindow() :
   this->_ritual.maxTime = 120000;
   this->_ritual.maxEnemy = 30;
   this->_ritual.deadEnemy = 0;
+  srand(time(NULL));
 }
 
 GameWindow::~GameWindow()
@@ -59,6 +62,24 @@ void GameWindow::input()
 	  this->_view.setCenter(420, 420);
 	  this->_view.zoom(0.2f);
 	}
+    }
+}
+
+void GameWindow::spawnArea()
+{
+  int x, y;
+
+  if (rand() % 100 < 42)
+    {
+      x = rand() % this->_width;
+      y = rand() % this->_height;
+      while (this->_iCollision->_collision.getPixel(x, y) == sf::Color::Red)
+	{
+	  x = rand() % this->_width;
+	  y = rand() % this->_height;
+	}
+      this->_entities.push_back(new Character(this, x, y));
+      std::cout << "BITE\n";
     }
 }
 
@@ -142,6 +163,8 @@ void GameWindow::loop(unsigned int fps)
 	  ct++;
 	  if (clock2.getElapsedTime().asSeconds() >= 1)
 	    {
+	      if (this->_iText->_text.getString() != "Title Screen")
+		this->spawnArea();
 	      std::cout << "fps: " << ct << std::endl;
 	      ct = 0;
 	      clock2.restart();

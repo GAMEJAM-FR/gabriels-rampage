@@ -37,6 +37,7 @@ public:
   GameWindow();
   ~GameWindow();
 private:
+  void spawnArea();
   void input();
   void update(float);
   void draw();

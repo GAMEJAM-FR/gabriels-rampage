@@ -150,8 +150,6 @@ void Character::moveIA(sf::Image collision, const Character &player, float time)
     y_tmp = -y_tmp;
   if (x + y == 0)
     return ;
-  std::cout << this->_x << " ---> " << (float)(x / (x_tmp + y_tmp)) * this->_speed * time << std::endl;
-  std::cout << this->_y << " ---> " << (float)(y / (x_tmp + y_tmp)) * this->_speed * time << std::endl << std::endl;
   collide(collision, this->_x + (float)(x / (x_tmp + y_tmp)) * this->_speed * time,
 	  this->_y + (float)(y / (x_tmp + y_tmp)) * this->_speed * time);
   if (x_tmp > y_tmp)

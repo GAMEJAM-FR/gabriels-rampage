@@ -22,6 +22,7 @@ GameWindow::GameWindow() :
   this->_ritual.maxTime = 120000;
   this->_ritual.maxEnemy = 30;
   this->_ritual.deadEnemy = 0;
+  this->_iMusic = NULL;
   srand(time(NULL));
 }
 
@@ -51,16 +52,27 @@ void GameWindow::input()
 	  this->_width = this->_event.size.width;
 	  this->_height = this->_event.size.height;
 	}
-      if (this->_iText->_text.getString() == "Title Screen" &&
-	  this->_event.type == sf::Event::KeyPressed)
+      if (this->_event.type == sf::Event::KeyPressed)
 	{
-	  init(new wrap::Sprite(tTest, 0, 0, true),
-	       new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
-	       new wrap::Music(mTest, true),
-	       new wrap::Image(iCollision));
-	  this->_entities.push_back(new Player(this, 420, 420));
-	  this->_view.setCenter(420, 420);
-	  this->_view.zoom(0.2f);
+	  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	    {
+	      this->_window->close();
+	      return ;
+	    }
+	  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+	    {
+	      this->_entities[0]->setHp(0);
+	    }
+	  else if (this->_iText->_text.getString() == "Title Screen")
+	    {
+	      init(new wrap::Sprite(tTest, 0, 0, true),
+		   new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
+		   new wrap::Music(mTest, true),
+		   new wrap::Image(iCollision));
+	      this->_entities.push_back(new Player(this, 420, 420));
+	      this->_view.setCenter(420, 420);
+	      this->_view.zoom(0.2f);
+	    }
 	}
     }
 }
@@ -79,7 +91,6 @@ void GameWindow::spawnArea()
 	  y = rand() % this->_height;
 	}
       this->_entities.push_back(new Character(this, x, y));
-      std::cout << "BITE\n";
     }
 }
 
@@ -90,13 +101,13 @@ void GameWindow::update(float time)
 
   while (ct < 4)
     {
-      if (sf::Keyboard::isKeyPressed(MOVE[ct][0]) || sf::Keyboard::isKeyPressed(MOVE[ct][1]))
+      if (this->_entities.size() > 0 && (sf::Keyboard::isKeyPressed(MOVE[ct][0]) || sf::Keyboard::isKeyPressed(MOVE[ct][1])))
 	(dynamic_cast<Player *>(this->_entities[0])->*move[ct])(this);
       ct++;
     }
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+  if (this->_entities.size() > 0 && sf::Mouse::isButtonPressed(sf::Mouse::Left))
     dynamic_cast<Player *>(this->_entities[0])->attack(this);
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+  if (this->_entities.size() > 0 && sf::Mouse::isButtonPressed(sf::Mouse::Right))
     dynamic_cast<Player *>(this->_entities[0])->specialAttack(this);
   ct = 0;
   while (ct < this->_entities.size())
@@ -105,14 +116,13 @@ void GameWindow::update(float time)
 	{
 	  if (ct == 0)
 	    {
-	      init(new wrap::Sprite(tTest, 0, 0, true),
-		   new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
-		   new wrap::Music(mTest, true),
-		   new wrap::Image(iCollision));
 	      this->_entities.clear();
-	      this->_view.setCenter(this->_iSprite->getWidth() / 2, this->_iSprite->getHeight() / 2);
-	      this->_view.zoom(2);
-	      this->_window->close();
+	      this->_sprites.clear();
+	      init(new wrap::Sprite(tDeadScreen, 0, 0, true),
+		   new wrap::Text("Dead Screen", fTest, 50, WIDTH / 2, HEIGHT / 5),
+		   new wrap::Music(mDead, true),
+		   new wrap::Image(iCollision));
+	      this->_view.zoom(5);
 	      return ;
 	    }
 	  it = this->_sprites.begin();
@@ -165,8 +175,7 @@ void GameWindow::loop(unsigned int fps)
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
 
-  this->_texts.push_back(*this->_iText);
-  this->_iMusic->_music.play();
+  //this->_texts.push_back(*this->_iText);
   while (this->_window->isOpen())
     {
       t = clock.getElapsedTime();
@@ -175,7 +184,8 @@ void GameWindow::loop(unsigned int fps)
 	  ct++;
 	  if (clock2.getElapsedTime().asSeconds() >= 1)
 	    {
-	      if (this->_iText->_text.getString() != "Title Screen")
+	      if (this->_iText->_text.getString() != "Title Screen" &&
+		  this->_iText->_text.getString() != "Dead Screen")
 		this->spawnArea();
 	      std::cout << "fps: " << ct << std::endl;
 	      ct = 0;
@@ -196,10 +206,13 @@ void GameWindow::loop(unsigned int fps)
 void GameWindow::init(wrap::Sprite *s, wrap::Text *t,
 		      wrap::Music *m, wrap::Image *i)
 {
+  if (this->_iMusic != NULL)
+    this->_iMusic->_music.stop();
   this->_iSprite = s;
   this->_iText = t;
   this->_iMusic = m;
   this->_iCollision = i;
+  this->_iMusic->_music.play();
   if (this->_sprites.size() > 0)
     {
       this->_sprites[0] = this->_iSprite;

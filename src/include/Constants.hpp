@@ -34,6 +34,8 @@ const std::string tTest =
   "asset/Plain.png";
 const std::string tTitle =
   "asset/title_screen.png";
+const std::string tDeadScreen =
+  "asset/dead_screen.png";
 const std::string tMonk =
   "asset/monk.png";
 const int Pl = 32;
@@ -53,7 +55,9 @@ const std::string fTest =
  * music paths
  */
 const std::string mTest =
-  "asset/nice_music.wav";
+  "asset/nice_music.ogg";
+const std::string mDead =
+  "asset/lol_u_died.ogg";
 
 /*
  * collision maps path

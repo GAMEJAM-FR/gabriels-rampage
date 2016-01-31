@@ -1,5 +1,6 @@
 #include "Character.hpp"
 #include "GameWindow.hpp"
+#include <iostream>
 
 Character::Character(GameWindow *win, int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
@@ -109,10 +110,11 @@ bool Character::attack(Character &enemy)
 void Character::takeDamage(unsigned int damage)
 {
   this->_hp = (damage >= this->_hp ? 0 : this->_hp - damage);
+  std::cout << this->_hp << std::endl;
 }
 
 void Character::update(GameWindow *win, float time)
-{
+{  
   if (this->_animation.getElapsedTime().asMilliseconds() > 200)
     {
       this->_animation.restart();
@@ -129,50 +131,51 @@ void Character::update(GameWindow *win, float time)
 }
 
 #define ABS(A) (A < 0 ? -A : A)
-#define X ((float)player.getX() - this->_x)
-#define Y ((float)player.getY() - this->_y)
 
-void Character::moveIA(sf::Image collision, const Character &player, float time)
+void Character::moveIA(const sf::Image& collision, const Character &player, const float& time)
 {
+  const float x = (float)player.getX() - this->_x;
+  const float y = (float)player.getY() - this->_y;
+  
   if (this->_hp <= 0)
     return ;
-  if (X + Y == 0)
+  if (x + y == 0)
     return ;
-  collide(collision, this->_x + (float)(X / (ABS(X) + ABS(Y))) * this->_speed * time,
-	  this->_y + (float)(Y / (ABS(X) + ABS(Y))) * this->_speed * time);
-  if (ABS(X) > ABS(Y))
+  collide(collision, this->_x + (float)(x / (ABS(x) + ABS(y))) * this->_speed * time,
+  	  this->_y + (float)(y / (ABS(x) + ABS(y))) * this->_speed * time);
+  if (ABS(x) > ABS(y))
     {
-      if (X >= 0)
+      if (x >= 0)
 	this->_direction = RIGHT;
       else
 	this->_direction = LEFT;
     }
   else
     {
-      if (Y >= 0)
+      if (y >= 0)
 	this->_direction = DOWN;
       else
 	this->_direction = UP;
     }
 }
 
-void Character::collide(sf::Image collision, float newX, float newY)
+void Character::collide(const sf::Image& collision, const float& newX, const float& newY)
 {
   if (this->_x < newX)
-    {
-      while (this->_x < newX && newX < collision.getSize().x)
-	{
-	  if (collision.getPixel(this->_x + (int)this->_hitbox + 0.1, this->_y) != sf::Color::Red)
-	    setX(this->_x + 0.1);
-	  else
-	    break ;
-	}
-    }
+  {
+    while (this->_x < newX && newX < collision.getSize().x)
+      {
+	if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
+	  setX(this->_x + 0.1);
+	else
+	  break ;
+      }
+  }
   else
     {
       while (this->_x > newX && newX >= 0)
 	{
-	  if (collision.getPixel(this->_x - (int)this->_hitbox - 0.1, this->_y) != sf::Color::Red)
+	  if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
 	    setX(this->_x - 0.1);
 	  else
 	    break ;
@@ -182,7 +185,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_y < newY && newY < collision.getSize().y)
 	{
-	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 0.1) != sf::Color::Red)
+	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
 	    setY(this->_y + 0.1);
 	  else
 	    break ;
@@ -192,7 +195,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_y > newY && newY >= 0)
 	{
-	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 0.1) != sf::Color::Red)
+	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
 	    setY(this->_y - 0.1);
 	  else
 	    break ;
@@ -205,7 +208,7 @@ int Character::getX() const
   return (this->_x);
 }
 
-void Character::setX(float x)
+void Character::setX(const float& x)
 {
   this->_x = x;
   this->_sprite->setPos(this->_x, this->_y);
@@ -216,7 +219,7 @@ int Character::getY() const
   return (this->_y);
 }
 
-void Character::setY(float y)
+void Character::setY(const float& y)
 {
   this->_y = y;
   this->_sprite->setPos(this->_x, this->_y);

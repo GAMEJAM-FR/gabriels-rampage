@@ -2,7 +2,7 @@
 #include "GameWindow.hpp"
 #include <iostream>
 
-Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.5, 1, Pl / 2, tMonk, 45, false)
+Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.75, 1, Pl / 2, tMonk, 70, false)
 {
   this->_sprite->_sprite.setTextureRect(sf::IntRect(0, 0, Pl, Pl));
 }
@@ -92,6 +92,8 @@ void Player::attack(GameWindow *win)
   if ((float)this->_cooldown.getElapsedTime().asMilliseconds() / 1000 > this->_frequency)
     {
       this->_cooldown.restart();
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
       this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
       this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
       this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));

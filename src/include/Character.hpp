@@ -23,13 +23,13 @@ public:
   virtual bool attack(Character &);
   void takeDamage(unsigned int);
   virtual void update(GameWindow *, float);
-  void moveIA(sf::Image, const Character &, float);
-  void collide(sf::Image, float, float);
+  void moveIA(const sf::Image&, const Character &, const float&);
+  void collide(const sf::Image&, const float&, const float&);
   
   int getX() const;
-  void setX(float);
+  void setX(const float&);
   int getY() const;
-  void setY(float);
+  void setY(const float&);
   unsigned int getHp() const;
   void setHp(unsigned int);
   unsigned int getAttack() const;

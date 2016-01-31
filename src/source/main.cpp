@@ -8,6 +8,5 @@ int main()
 	   new wrap::Music(mTest, true),
 	   new wrap::Image(iCollision));
   win.loop(FPS);
-  std::cout << "BITE\n";
   return (0);
 }

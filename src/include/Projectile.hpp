@@ -4,8 +4,6 @@
 # include "Constants.hpp"
 # include "Asset.hpp"
 
-# define ABS(i) i < 0 ? -i : i
-
 class GameWindow;
 
 class Projectile

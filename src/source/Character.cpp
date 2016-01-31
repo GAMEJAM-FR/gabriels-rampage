@@ -1,6 +1,5 @@
 #include "Character.hpp"
 #include "GameWindow.hpp"
-#include <iostream>
 
 Character::Character(GameWindow *win, int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
@@ -129,39 +128,28 @@ void Character::update(GameWindow *win, float time)
   this->_sprite->_sprite.setTextureRect(sf::IntRect(this->_idx * Al, (int)this->_direction * Al, Al, Al));
 }
 
+#define ABS(A) (A < 0 ? -A : A)
+#define X ((float)player.getX() - this->_x)
+#define Y ((float)player.getY() - this->_y)
+
 void Character::moveIA(sf::Image collision, const Character &player, float time)
 {
-  float	x;
-  float x_tmp;
-  float	y;
-  float y_tmp;
-
   if (this->_hp <= 0)
     return ;
-  std::cout.setf(std::ios::fixed, std::ios::floatfield);
-  std::cout.precision(3);
-  x = (float)player.getX() - this->_x;
-  y = (float)player.getY() - this->_y;
-  x_tmp = x;
-  y_tmp = y;
-  if (x_tmp < 0)
-    x_tmp = -x_tmp;
-  if (y < 0)
-    y_tmp = -y_tmp;
-  if (x + y == 0)
+  if (X + Y == 0)
     return ;
-  collide(collision, this->_x + (float)(x / (x_tmp + y_tmp)) * this->_speed * time,
-	  this->_y + (float)(y / (x_tmp + y_tmp)) * this->_speed * time);
-  if (x_tmp > y_tmp)
+  collide(collision, this->_x + (float)(X / (ABS(X) + ABS(Y))) * this->_speed * time,
+	  this->_y + (float)(Y / (ABS(X) + ABS(Y))) * this->_speed * time);
+  if (ABS(X) > ABS(Y))
     {
-      if (x >= 0)
+      if (X >= 0)
 	this->_direction = RIGHT;
       else
 	this->_direction = LEFT;
     }
   else
     {
-      if (y >= 0)
+      if (Y >= 0)
 	this->_direction = DOWN;
       else
 	this->_direction = UP;
@@ -174,7 +162,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_x < newX && newX < collision.getSize().x)
 	{
-	  if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
+	  if (collision.getPixel(this->_x + (int)this->_hitbox + 0.1, this->_y) != sf::Color::Red)
 	    setX(this->_x + 0.1);
 	  else
 	    break ;
@@ -184,7 +172,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_x > newX && newX >= 0)
 	{
-	  if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
+	  if (collision.getPixel(this->_x - (int)this->_hitbox - 0.1, this->_y) != sf::Color::Red)
 	    setX(this->_x - 0.1);
 	  else
 	    break ;
@@ -194,7 +182,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_y < newY && newY < collision.getSize().y)
 	{
-	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
+	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 0.1) != sf::Color::Red)
 	    setY(this->_y + 0.1);
 	  else
 	    break ;
@@ -204,7 +192,7 @@ void Character::collide(sf::Image collision, float newX, float newY)
     {
       while (this->_y > newY && newY >= 0)
 	{
-	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
+	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 0.1) != sf::Color::Red)
 	    setY(this->_y - 0.1);
 	  else
 	    break ;

@@ -103,6 +103,18 @@ void GameWindow::update(float time)
     {
       if (this->_entities[ct]->getHp() <= 0)
 	{
+	  if (ct == 0)
+	    {
+	      init(new wrap::Sprite(tTest, 0, 0, true),
+		   new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
+		   new wrap::Music(mTest, true),
+		   new wrap::Image(iCollision));
+	      this->_entities.clear();
+	      this->_view.setCenter(this->_iSprite->getWidth() / 2, this->_iSprite->getHeight() / 2);
+	      this->_view.zoom(2);
+	      this->_window->close();
+	      return ;
+	    }
 	  it = this->_sprites.begin();
 	  while (it != this->_sprites.end())
 	    {

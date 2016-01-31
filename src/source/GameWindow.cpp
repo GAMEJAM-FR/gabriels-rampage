@@ -18,7 +18,7 @@ GameWindow::GameWindow() :
   this->_window->setVerticalSyncEnabled(true);
   this->_view.setCenter(420, 420);
   this->_view.zoom(0.2f);
-  this->_entities.push_back(new Player(420, 420));
+  this->_entities.push_back(new Player(this, 420, 420));
 }
 
 GameWindow::~GameWindow()
@@ -64,7 +64,7 @@ void GameWindow::update(float time)
     dynamic_cast<Player *>(this->_entities[0])->attack(this);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
     dynamic_cast<Player *>(this->_entities[0])->specialAttack(this);
-  ct = 1;
+  ct = 0;
   while (ct < this->_entities.size())
     {
       this->_entities[0]->update(this, time);
@@ -80,7 +80,8 @@ void GameWindow::draw()
   this->_window->clear();
   while (ct < this->_sprites.size())
     {
-      this->_window->draw(this->_sprites[ct]._sprite);
+      if (ct != 0)
+	this->_window->draw(this->_sprites[ct]._sprite);
       ct++;
     }
   ct = 0;
@@ -99,7 +100,7 @@ void GameWindow::loop(unsigned int fps)
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
 
-  this->_sprites.push_back(*this->_iSprite);
+  this->_sprites.insert(this->_sprites.begin(), *this->_iSprite);
   this->_texts.push_back(*this->_iText);
   this->_iMusic->_music.play();
   while (this->_window->isOpen())

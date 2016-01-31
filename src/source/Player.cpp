@@ -1,9 +1,10 @@
 #include "Player.hpp"
 #include "GameWindow.hpp"
+#include <iostream>
 
-Player::Player(int x, int y) : Character(x, y, UP, 15, 10, 0.5, 1, 5, tMonk, 25, false)
+Player::Player(GameWindow *win, int x, int y) : Character(win, x, y, UP, 15, 10, 0.5, 1, 5, "asset/map.jpg", 25, false)
 {
-  this->_sprite._sprite.setTextureRect(sf::IntRect(0, 0, 24, 24));
+  //this->_sprite->_sprite.setTextureRect(sf::IntRect(0, 0, 24, 24));
 }
 
 Player::Player(Player const& copy) : Character(copy)
@@ -51,6 +52,7 @@ void Player::update(GameWindow *win, float time)
   size_t i;
 
   i = 0;
+  std::cout << this->_x << " / " << this->_y << " --- " << this->_sprite->getX() << " / " << this->_sprite->getY() << std::endl;
   while (i < this->_projectiles.size())
     {
       if (this->_projectiles[i].update(win, time))

@@ -12,7 +12,7 @@ public:
   void right(GameWindow *);
   void down(GameWindow *);
 public:
-  Player(int, int);
+  Player(GameWindow *, int, int);
   Player(Player const&);
   ~Player();
 

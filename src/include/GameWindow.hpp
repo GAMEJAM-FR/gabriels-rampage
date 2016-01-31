@@ -19,7 +19,7 @@ private:
   wrap::Text *_iText;
   wrap::Music *_iMusic;
   wrap::Image *_iCollision;
-private:
+public:
   std::vector<wrap::Sprite> _sprites;
   std::vector<wrap::Text> _texts;
   std::vector<wrap::Music> _musics;

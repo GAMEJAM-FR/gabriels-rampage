@@ -127,9 +127,19 @@ unsigned int wrap::Asset::getWidth() const
   return (this->_width);
 }
 
-unsigned int wrap::Asset::getHeigth() const
+unsigned int wrap::Asset::getHeight() const
 {
   return (this->_height);
+}
+
+unsigned int wrap::Asset::getX() const
+{
+  return (this->_x);
+}
+
+unsigned int wrap::Asset::getY() const
+{
+  return (this->_y);
 }
 
 wrap::Image::Image(const std::string &path)

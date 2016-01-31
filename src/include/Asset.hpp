@@ -19,7 +19,9 @@ namespace wrap
     Asset(unsigned int x, unsigned int y) : _x(x), _y(y) {}
   public:
     unsigned int getWidth() const;
-    unsigned int getHeigth() const;
+    unsigned int getHeight() const;
+    unsigned int getX() const;
+    unsigned int getY() const;
   };
 
   class Sprite : public Asset

@@ -32,6 +32,8 @@ enum Direction
  */
 const std::string tTest =
   "asset/Plain.png";
+const std::string tTitle =
+  "asset/title_screen.png";
 const std::string tMonk =
   "asset/monk.png";
 const int Pl = 32;

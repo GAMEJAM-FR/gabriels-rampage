@@ -16,9 +16,7 @@ GameWindow::GameWindow() :
   _height(HEIGHT)
 {
   this->_window->setVerticalSyncEnabled(true);
-  this->_view.setCenter(420, 420);
-  this->_view.zoom(0.2f);
-  this->_entities.push_back(new Player(this, 420, 420));
+  this->_view.zoom(2);
   this->_ritual.maxTime = 120000;
   this->_ritual.maxEnemy = 30;
   this->_ritual.deadEnemy = 0;
@@ -49,6 +47,17 @@ void GameWindow::input()
 	{
 	  this->_width = this->_event.size.width;
 	  this->_height = this->_event.size.height;
+	}
+      if (this->_iText->_text.getString() == "Title Screen" &&
+	  this->_event.type == sf::Event::KeyPressed)
+	{
+	  init(new wrap::Sprite(tTest, 0, 0, true),
+	       new wrap::Text(TITLE, fTest, 50, WIDTH / 2, HEIGHT / 5),
+	       new wrap::Music(mTest, true),
+	       new wrap::Image(iCollision));
+	  this->_entities.push_back(new Player(this, 420, 420));
+	  this->_view.setCenter(420, 420);
+	  this->_view.zoom(0.2f);
 	}
     }
 }
@@ -123,7 +132,6 @@ void GameWindow::loop(unsigned int fps)
   sf::Time t = sf::milliseconds(1 / (float) fps);
   int ct = 0;
 
-  this->_sprites.insert(this->_sprites.begin(), this->_iSprite);
   this->_texts.push_back(*this->_iText);
   this->_iMusic->_music.play();
   while (this->_window->isOpen())
@@ -157,6 +165,15 @@ void GameWindow::init(wrap::Sprite *s, wrap::Text *t,
   this->_iText = t;
   this->_iMusic = m;
   this->_iCollision = i;
+  if (this->_sprites.size() > 0)
+    {
+      this->_sprites[0] = this->_iSprite;
+    }
+  else
+    {
+      this->_sprites.push_back(this->_iSprite);
+      this->_view.setCenter(s->getWidth() / 2, s->getHeight() / 2);
+    }
 }
 
 void GameWindow::setView(int x, int y)

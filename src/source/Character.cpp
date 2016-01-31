@@ -1,5 +1,6 @@
 #include "Character.hpp"
 #include "GameWindow.hpp"
+#include <iostream>
 
 Character::Character(GameWindow *win, int x, int y, Direction direction, unsigned int hp,
 		     unsigned int attack, float frequency, unsigned int speed,
@@ -62,30 +63,45 @@ bool Character::attack(Character &enemy)
     return (false);
   if ((float) (this->_cooldown.getElapsedTime()).asMilliseconds() / 1000 > this->_frequency)
     {
-      this->_cooldown.restart();
       if (this->_direction == LEFT)
 	{
 	  if (this->_x - (enemy._x + this->_hitbox) <= this->_range + this->_hitbox &&
 	      this->_x - (enemy._x + (int)this->_hitbox) >= 0)
-	    return (enemy.takeDamage(this->_attack), true);
+	    {
+	      this->_cooldown.restart();
+	      enemy.takeDamage(this->_attack);
+	      return (true);
+	    }
 	}
       else if (this->_direction == UP)
 	{
 	  if (this->_y - (enemy._y + this->_hitbox) <= this->_range + this->_hitbox &&
 	      this->_y - (enemy._y + (int)this->_hitbox) >= 0)
-	    return (enemy.takeDamage(this->_attack), true);
+	    {
+	      this->_cooldown.restart();
+	      enemy.takeDamage(this->_attack);
+	      return (true);
+	    }
 	}
       else if (this->_direction == RIGHT)
 	{
 	  if ((enemy._x - this->_hitbox) - this->_x <= this->_range + this->_hitbox &&
 	      (enemy._x - (int)this->_hitbox) - this->_x >= 0)
-	    return (enemy.takeDamage(this->_attack), true);
+	    {
+	      this->_cooldown.restart();
+	      enemy.takeDamage(this->_attack);
+	      return (true);
+	    }
 	}
       else
 	{
 	  if ((enemy._y - this->_hitbox) - this->_y <= this->_range + this->_hitbox &&
 	      (enemy._y - (int)this->_hitbox) - this->_y >= 0)
-	    return (enemy.takeDamage(this->_attack), true);
+	    {
+	      this->_cooldown.restart();
+	      enemy.takeDamage(this->_attack);
+	      return (true);
+	    }
 	}
     }
   return (false);
@@ -105,53 +121,96 @@ void Character::update(GameWindow *win, float time)
       if (this->_idx > 2)
 	this->_idx = 0;
     }
-  if (!attack(win->getPlayer()))
-    moveIA(win->getCollision(), win->getPlayer(), time);
-  this->_sprite->_sprite.setTextureRect(sf::IntRect(this->_idx * 24, (int)this->_direction * 24, 24, 24));
+  if ((float) (this->_cooldown.getElapsedTime()).asMilliseconds() / 1000 > this->_frequency / 2)
+    {
+      if (!attack(win->getPlayer()))
+	moveIA(win->getCollision(), win->getPlayer(), time);
+    }
+  this->_sprite->_sprite.setTextureRect(sf::IntRect(this->_idx * Al, (int)this->_direction * Al, Al, Al));
 }
 
 void Character::moveIA(sf::Image collision, const Character &player, float time)
 {
   float	x;
+  float x_tmp;
   float	y;
+  float y_tmp;
 
   if (this->_hp <= 0)
     return ;
+  std::cout.setf(std::ios::fixed, std::ios::floatfield);
+  std::cout.precision(3);
   x = (float)player.getX() - this->_x;
   y = (float)player.getY() - this->_y;
-  collide(collision, this->_x + (x / (x + y)) * this->_speed * time,
-	  this->_y + (y / (x + y)) * this->_speed * time);
+  x_tmp = x;
+  y_tmp = y;
+  if (x_tmp < 0)
+    x_tmp = -x_tmp;
+  if (y < 0)
+    y_tmp = -y_tmp;
+  if (x + y == 0)
+    return ;
+  std::cout << this->_x << " ---> " << (float)(x / (x_tmp + y_tmp)) * this->_speed * time << std::endl;
+  std::cout << this->_y << " ---> " << (float)(y / (x_tmp + y_tmp)) * this->_speed * time << std::endl << std::endl;
+  collide(collision, this->_x + (float)(x / (x_tmp + y_tmp)) * this->_speed * time,
+	  this->_y + (float)(y / (x_tmp + y_tmp)) * this->_speed * time);
+  if (x_tmp > y_tmp)
+    {
+      if (x >= 0)
+	this->_direction = RIGHT;
+      else
+	this->_direction = LEFT;
+    }
+  else
+    {
+      if (y >= 0)
+	this->_direction = DOWN;
+      else
+	this->_direction = UP;
+    }
 }
 
 void Character::collide(sf::Image collision, float newX, float newY)
 {
-  while (this->_x < newX && newX < collision.getSize().x)
+  if (this->_x < newX)
     {
-      if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
-	setX(this->_x + 1);
-      else
-	break ;
+      while (this->_x < newX && newX < collision.getSize().x)
+	{
+	  if (collision.getPixel(this->_x + (int)this->_hitbox + 1, this->_y) != sf::Color::Red)
+	    setX(this->_x + 0.1);
+	  else
+	    break ;
+	}
     }
-  while (this->_y < newY && newY < collision.getSize().y)
+  else
     {
-      if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
-	setY(this->_y + 1);
-      else
-	break ;
+      while (this->_x > newX && newX >= 0)
+	{
+	  if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
+	    setX(this->_x - 0.1);
+	  else
+	    break ;
+	}
     }
-  while (this->_x > newX && newX >= 0)
+  if (this->_y < newY)
     {
-      if (collision.getPixel(this->_x - (int)this->_hitbox - 1, this->_y) != sf::Color::Red)
-	setX(this->_x - 1);
-      else
-	break ;
+      while (this->_y < newY && newY < collision.getSize().y)
+	{
+	  if (collision.getPixel(this->_x, this->_y + (int)this->_hitbox + 1) != sf::Color::Red)
+	    setY(this->_y + 0.1);
+	  else
+	    break ;
+	}
     }
-  while (this->_y > newY && newY >= 0)
+  else
     {
-      if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
-	setY(this->_y - 1);
-      else
-	break ;
+      while (this->_y > newY && newY >= 0)
+	{
+	  if (collision.getPixel(this->_x, this->_y - (int)this->_hitbox - 1) != sf::Color::Red)
+	    setY(this->_y - 0.1);
+	  else
+	    break ;
+	}
     }
 }
 
@@ -160,7 +219,7 @@ int Character::getX() const
   return (this->_x);
 }
 
-void Character::setX(int x)
+void Character::setX(float x)
 {
   this->_x = x;
   this->_sprite->setPos(this->_x, this->_y);
@@ -171,7 +230,7 @@ int Character::getY() const
   return (this->_y);
 }
 
-void Character::setY(int y)
+void Character::setY(float y)
 {
   this->_y = y;
   this->_sprite->setPos(this->_x, this->_y);

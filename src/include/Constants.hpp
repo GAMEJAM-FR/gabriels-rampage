@@ -37,6 +37,9 @@ const std::string tMonk =
 const int Pl = 32;
 const std::string tBall =
   "asset/ball.png";
+const std::string tAcolyte =
+  "asset/Acolyte.png";
+const int Al = 32;
 
 /*
  * font paths

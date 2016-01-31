@@ -53,6 +53,7 @@ void GameWindow::input()
 void GameWindow::update(float time)
 {
   unsigned int ct = 0;
+  std::vector<wrap::Sprite *>::iterator it;
 
   while (ct < 4)
     {
@@ -67,8 +68,27 @@ void GameWindow::update(float time)
   ct = 0;
   while (ct < this->_entities.size())
     {
-      this->_entities[0]->update(this, time);
-      ct++;
+      if (this->_entities[ct]->getHp() <= 0)
+	{
+	  it = this->_sprites.begin();
+	  while (it != this->_sprites.end())
+	    {
+	      if (*it == this->_entities[ct]->_sprite)
+		{
+		  this->_sprites.erase(it);
+		  delete this->_entities[ct]->_sprite;
+		  break ;
+		}
+	      it++;
+	    }
+	  delete this->_entities[ct];
+	  this->_entities.erase(this->_entities.begin() + ct);
+	}
+      else
+	{
+	  this->_entities[ct]->update(this, time);
+	  ct++;
+	}
     }
   this->_window->setView(this->_view);
 }

@@ -14,7 +14,7 @@ class Character
 public:
   Character(GameWindow *win, int x, int y, Direction _direction = DOWN, unsigned int hp = 1,
 	    unsigned int attack = 1, float frequency = 1, unsigned int speed = 40,
-	    unsigned int hitbox = 5, const std::string &path = tMonk, unsigned int range = 5, bool fly = false);
+	    unsigned int hitbox = 5, const std::string &path = tAcolyte, unsigned int range = 5, bool fly = false);
   Character(Character const&);
   virtual ~Character();
 
@@ -27,9 +27,9 @@ public:
   void collide(sf::Image, float, float);
   
   int getX() const;
-  void setX(int);
+  void setX(float);
   int getY() const;
-  void setY(int);
+  void setY(float);
   unsigned int getHp() const;
   void setHp(unsigned int);
   unsigned int getAttack() const;
@@ -55,7 +55,9 @@ protected:
   unsigned int _speed;
   unsigned int _hitbox;
   unsigned int _range;
+public:
   wrap::Sprite *_sprite;
+protected:
   bool _fly;
   sf::Clock _cooldown;
   int _idx;

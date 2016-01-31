@@ -1,26 +1,28 @@
 #include <SFML/Graphics.hpp>
 #include "Asset.hpp"
+#include "Constants.hpp"
 
-wrap::Sprite::Sprite(const std::string &path, unsigned int x, unsigned int y, bool bg)
-  : wrap::Asset(x, y), _bg(bg)
+wrap::Sprite::Sprite(const std::string &path, int x, int y, bool bg)
+  : wrap::Asset(x, y)
 {
+  (void)bg;
   this->_texture.loadFromFile(path);
   this->_sprite.setTexture(this->_texture);
   this->_width = this->_sprite.getLocalBounds().width;
   this->_height = this->_sprite.getLocalBounds().height;
-  this->_xOffset = this->_bg ? 0 : this->_width / 2;
-  this->_yOffset = this->_bg ? 0 : this->_height / 2;
+  this->_xOffset = bg ? 0 : Pl / 2;
+  this->_yOffset = bg ? 0 : Pl / 2;
   this->_sprite.setPosition(sf::Vector2f(this->_x - this->_xOffset, this->_y - this->_yOffset));
 }
 
 wrap::Sprite::Sprite(const wrap::Sprite &obj)
-  : wrap::Asset(obj._x, obj._y), _texture(obj._texture), _bg(obj._bg)
+  : wrap::Asset(obj._x, obj._y), _texture(obj._texture)
 {
   this->_sprite.setTexture(this->_texture);
   this->_width = this->_sprite.getLocalBounds().width;
   this->_height = this->_sprite.getLocalBounds().height;
-  this->_xOffset = this->_bg ? 0 : this->_width / 2;
-  this->_yOffset = this->_bg ? 0 : this->_height / 2;
+  this->_xOffset = !obj._xOffset ? 0 : this->_width / 2;
+  this->_yOffset = !obj._yOffset ? 0 : this->_height / 2;
   this->_sprite.setPosition(sf::Vector2f(this->_x - this->_xOffset, this->_y - this->_yOffset));
 }
 
@@ -29,17 +31,16 @@ wrap::Sprite &wrap::Sprite::operator=(const wrap::Sprite &obj)
   this->_x = obj._x;
   this->_y = obj._y;
   this->_texture = obj._texture;
-  this->_bg = obj._bg;
   this->_sprite.setTexture(this->_texture);
   this->_width = this->_sprite.getLocalBounds().width;
   this->_height = this->_sprite.getLocalBounds().height;
-  this->_xOffset = this->_bg ? 0 : this->_width / 2;
-  this->_yOffset = this->_bg ? 0 : this->_height / 2;
+  this->_xOffset = !obj._xOffset ? 0 : this->_width / 2;
+  this->_yOffset = !obj._yOffset ? 0 : this->_height / 2;
   this->_sprite.setPosition(sf::Vector2f(this->_x - this->_xOffset, this->_y - this->_yOffset));
   return (*this);
 }
 
-void wrap::Sprite::setPos(unsigned int x, unsigned int y)
+void wrap::Sprite::setPos(int x, int y)
 {
   this->_x = x;
   this->_y = y;
@@ -47,7 +48,7 @@ void wrap::Sprite::setPos(unsigned int x, unsigned int y)
 }
 
 wrap::Text::Text(const std::string &content, const std::string &path,
-		 unsigned int size, unsigned int x, unsigned int y)
+		 int size, int x, int y)
   : wrap::Asset(x, y)
 {
   this->_font.loadFromFile(path);
@@ -90,7 +91,7 @@ wrap::Text &wrap::Text::operator=(const wrap::Text &obj)
   return (*this);
 }
 
-void wrap::Text::setPos(unsigned int x, unsigned int y)
+void wrap::Text::setPos(int x, int y)
 {
   this->_x = x;
   this->_y = y;
@@ -122,22 +123,22 @@ wrap::Music &wrap::Music::operator=(const wrap::Music &obj)
   return (*this);
 }
 
-unsigned int wrap::Asset::getWidth() const
+int wrap::Asset::getWidth() const
 {
   return (this->_width);
 }
 
-unsigned int wrap::Asset::getHeight() const
+int wrap::Asset::getHeight() const
 {
   return (this->_height);
 }
 
-unsigned int wrap::Asset::getX() const
+int wrap::Asset::getX() const
 {
   return (this->_x);
 }
 
-unsigned int wrap::Asset::getY() const
+int wrap::Asset::getY() const
 {
   return (this->_y);
 }

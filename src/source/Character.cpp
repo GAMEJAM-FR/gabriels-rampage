@@ -14,7 +14,7 @@ Character::Character(GameWindow *win, int x, int y, Direction direction, unsigne
   _speed(speed),
   _hitbox(hitbox),
   _range(range),
-  _sprite(new wrap::Sprite(path, x, y, true)),
+  _sprite(new wrap::Sprite(path, x, y, false)),
   _fly(fly),
   _idx(0)
 {

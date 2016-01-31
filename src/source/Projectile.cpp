@@ -1,46 +1,47 @@
 #include "Projectile.hpp"
 #include "GameWindow.hpp"
+#include "Constants.hpp"
 #include <iostream>
 
 Projectile::Projectile(GameWindow *win, int x, int y, int damage, Direction direction) :
-  _baseX((float)x),
-  _baseY((float)y),
-  _x((float)x),
-  _y((float)y),
   _damage(damage),
   _speed(100),
-  _range(0),
-  _sprite(new wrap::Sprite(tBall, x, y, false))
+  _range(0)
 {
   if (direction == LEFT)
-    this->_angle = 180;
+    this->_angle = 180, x -= Pl;
   else if (direction == UP)
-    this->_angle = 90;
+    this->_angle = 90, y -= Pl;
   else if (direction == RIGHT)
-    this->_angle = 0;
+    this->_angle = 0, x += Pl;
   else
-    this->_angle = 270;
+    this->_angle = 270, y += Pl;
+  this->_baseX = (float)x;
+  this->_baseY = (float)y;
+  this->_x = (float)x;
+  this->_y = (float)y;
+  this->_sprite = new wrap::Sprite(tBall, x, y, false);
   win->_sprites.push_back(this->_sprite);
 }
 
 Projectile::Projectile(GameWindow *win, int x, int y, int damage, Direction direction, int range) :
-  _baseX((float)x),
-  _baseY((float)y),
-  _x((float)x),
-  _y((float)y),
   _damage(damage),
   _speed(100),
-  _range(range),
-  _sprite(new wrap::Sprite(tBall, x, y, false))
+  _range(range)
 {
   if (direction == LEFT)
-    this->_angle = 180;
+    this->_angle = 180, x -= Pl / 2;
   else if (direction == UP)
-    this->_angle = 90;
+    this->_angle = 90, y -= Pl / 2;
   else if (direction == RIGHT)
-    this->_angle = 0;
+    this->_angle = 0, x += Pl / 2;
   else
-    this->_angle = 270;
+    this->_angle = 270, y += Pl / 2;
+  this->_baseX = (float)x;
+  this->_baseY = (float)y;
+  this->_x = (float)x;
+  this->_y = (float)y;
+  this->_sprite = new wrap::Sprite(tBall, x, y, false);
   this->_angle += (rand() % 120 - 60);
   if (this->_angle < 0)
     this->_angle += 360;
@@ -94,7 +95,6 @@ bool Projectile::move(GameWindow *win, float time)
 
   if (this->_angle >= 0 && this->_angle < 90)
     {
-      std::cout << this->_x << " / " << this->_x + time * this->_speed * ((90 - (float)this->_angle) / 90) << " --- " << ((90 - (float)this->_angle) / 90) << std::endl;
       setX(this->_x + time * this->_speed * ((90 - (float)this->_angle) / 90));
       setY(this->_y - time * this->_speed * ((float)this->_angle / 90));
     }

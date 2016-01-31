@@ -92,9 +92,9 @@ void Player::attack(GameWindow *win)
   if ((float)this->_cooldown.getElapsedTime().asMilliseconds() / 1000 > this->_frequency)
     {
       this->_cooldown.restart();
-      this->_projectiles.push_back(Projectile(win, this->_x, this->_y, this->_attack, this->_direction, this->_range));
-      this->_projectiles.push_back(Projectile(win, this->_x, this->_y, this->_attack, this->_direction, this->_range));
-      this->_projectiles.push_back(Projectile(win, this->_x, this->_y, this->_attack, this->_direction, this->_range));
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction, this->_range));
     }
 }
 
@@ -103,6 +103,6 @@ void Player::specialAttack(GameWindow *win)
   if ((float)this->_cooldown.getElapsedTime().asMilliseconds() / 1000 > this->_frequency)
     {
       this->_cooldown.restart();
-      this->_projectiles.push_back(Projectile(win, this->_x, this->_y, this->_attack, this->_direction));
+      this->_projectiles.push_back(Projectile(win, this->_x + Pl / 2, this->_y + Pl / 2, this->_attack, this->_direction));
     }
 }

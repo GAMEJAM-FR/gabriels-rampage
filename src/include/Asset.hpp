@@ -9,33 +9,34 @@ namespace wrap
   class Asset
   {
   protected:
-    unsigned int _x;
-    unsigned int _y;
-    unsigned int _width;
-    unsigned int _height;
-    unsigned int _xOffset;
-    unsigned int _yOffset;
-    Asset() {}
-    Asset(unsigned int x, unsigned int y) : _x(x), _y(y) {}
+    int _x;
+    int _y;
+    int _width;
+    int _height;
   public:
-    unsigned int getWidth() const;
-    unsigned int getHeight() const;
-    unsigned int getX() const;
-    unsigned int getY() const;
+    int _xOffset;
+    int _yOffset;
+  protected:
+    Asset() {}
+    Asset(int x, int y) : _x(x), _y(y) {}
+  public:
+    int getWidth() const;
+    int getHeight() const;
+    int getX() const;
+    int getY() const;
   };
 
   class Sprite : public Asset
   {
   private:
     sf::Texture _texture;
-    bool _bg;
   public:
     sf::Sprite _sprite;
     Sprite() {}
-    Sprite(const std::string &, unsigned int, unsigned int, bool);
+    Sprite(const std::string &, int, int, bool);
     Sprite(const wrap::Sprite &);
     wrap::Sprite &operator=(const wrap::Sprite &);
-    void setPos(unsigned int, unsigned int);
+    void setPos(int, int);
   };
 
   class Text : public Asset
@@ -45,10 +46,10 @@ namespace wrap
   public:
     sf::Text _text;
     Text() {}
-    Text(const std::string &, const std::string &, unsigned int, unsigned int, unsigned int);
+    Text(const std::string &, const std::string &, int, int, int);
     Text(const wrap::Text &);
     wrap::Text &operator=(const wrap::Text &);
-    void setPos(unsigned int, unsigned int);
+    void setPos(int, int);
   };
 
   class Music
